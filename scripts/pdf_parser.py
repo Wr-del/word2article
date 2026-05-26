@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 PDF Parser for 不背单词 App exported PDF files.
-Uses pdfplumber to extract and clean English words from table-structured PDFs.
+Uses pdfplumber's extract_words() with coordinate-based merging to handle fragmented text.
 """
 
 import sys
@@ -9,9 +9,11 @@ import json
 import re
 from typing import List
 
+
 def extract_words_from_pdf(pdf_path: str) -> List[str]:
     """
     Extract English words from a PDF file exported by 不背单词 App.
+    Uses extract_words() with x_tolerance/y_tolerance to merge fragmented text blocks.
 
     Args:
         pdf_path: Path to the PDF file
@@ -31,28 +33,26 @@ def extract_words_from_pdf(pdf_path: str) -> List[str]:
     try:
         with pdfplumber.open(pdf_path) as pdf:
             for page in pdf.pages:
-                # Extract tables from the page
-                tables = page.extract_tables()
+                # Use extract_words with tolerance to merge fragmented text blocks
+                # x_tolerance: horizontal spacing tolerance (merge "pr" and "imarily")
+                # y_tolerance: vertical spacing tolerance for same line
+                word_objects = page.extract_words(
+                    x_tolerance=4,
+                    y_tolerance=3,
+                    keep_blank_chars=False,
+                    use_text_flow=False
+                )
 
-                for table in tables:
-                    if not table:
+                for word_obj in word_objects:
+                    text = word_obj.get('text', '').strip()
+                    if not text:
                         continue
 
-                    for row in table:
-                        if not row:
-                            continue
-
-                        # Process each cell in the row
-                        for cell in row:
-                            if not cell:
-                                continue
-
-                            # Clean and extract words from cell
-                            extracted = clean_and_extract_words(cell)
-                            for word in extracted:
-                                if word not in seen:
-                                    seen.add(word)
-                                    words.append(word)
+                    # Clean and validate the word
+                    cleaned = clean_word(text)
+                    if cleaned and cleaned not in seen:
+                        seen.add(cleaned)
+                        words.append(cleaned)
 
     except Exception as e:
         print(f"Error parsing PDF: {e}", file=sys.stderr)
@@ -61,107 +61,85 @@ def extract_words_from_pdf(pdf_path: str) -> List[str]:
     return words
 
 
-def clean_and_extract_words(text: str) -> List[str]:
+def clean_word(text: str) -> str:
     """
-    Clean text and extract English words.
+    Clean a single word extracted from PDF.
+    Returns cleaned lowercase word or empty string if invalid.
 
     Args:
-        text: Raw text from PDF cell
+        text: Raw text from PDF
 
     Returns:
-        List of cleaned English words
+        Cleaned word or empty string
     """
     if not text:
-        return []
+        return ""
 
-    words = []
+    # Remove leading/trailing whitespace
+    text = text.strip()
 
-    # Split by newlines and process each line
-    lines = text.split('\n')
+    # Skip if empty
+    if not text:
+        return ""
 
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
+    # Skip checkbox symbol
+    if text == '☐':
+        return ""
 
-        # Skip non-word content
-        if is_noise(line):
-            continue
+    # Skip pure numbers
+    if re.match(r'^\d+$', text):
+        return ""
 
-        # Extract words from the line
-        extracted = extract_words_from_line(line)
-        words.extend(extracted)
+    # Skip Chinese characters (contains any Chinese)
+    if re.search(r'[一-鿿]', text):
+        return ""
 
-    return words
-
-
-def is_noise(text: str) -> bool:
-    """
-    Check if text is noise (not a valid word entry).
-
-    Args:
-        text: Text to check
-
-    Returns:
-        True if text is noise
-    """
-    # Filter patterns
+    # Skip fixed text patterns from 不背单词
     noise_patterns = [
-        (r'^☐$', False),  # Checkbox symbol
-        (r'^Word\s*Meaning$', False),  # Header
-        (r'^Word\n*Meaning$', False),  # Header with newline
-        (r'^专单', False),  # Chinese header
-        (r'^不背单词', False),  # App name
-        (r'^\d+$', False),  # Pure numbers
-        (r'^[a-zA-Z]\.$', False),  # Single letter with period
-        (r'^[A-Z]{2,}$', True),  # All caps (likely abbreviation) - case sensitive
+        r'^Word$',
+        r'^Meaning$',
+        r'^Example$',
+        r'^专单',
+        r'^不背单词',
+        r'^Word\s*Meaning$',
     ]
+    for pattern in noise_patterns:
+        if re.match(pattern, text, re.IGNORECASE):
+            return ""
 
-    for pattern, case_sensitive in noise_patterns:
-        if case_sensitive:
-            if re.match(pattern, text):
-                return True
-        else:
-            if re.match(pattern, text, re.IGNORECASE):
-                return True
+    # Skip part-of-speech abbreviations
+    pos_abbreviations = {
+        'adv', 'adj', 'vi', 'vt', 'n', 'vlink', 'prep',
+        'conj', 'pron', 'int', 'aux', 'det', 'art'
+    }
+    if text.lower().rstrip('.') in pos_abbreviations:
+        return ""
 
-    # Check if text contains mostly non-ASCII characters (Chinese, etc.)
-    non_ascii = sum(1 for c in text if ord(c) > 127)
-    if non_ascii > len(text) * 0.5:
-        return True
+    # Skip single letter with period (like "n.")
+    if re.match(r'^[a-zA-Z]\.$', text):
+        return ""
 
-    return False
+    # Extract English word (may contain hyphens or apostrophes)
+    # Match patterns like: word, well-known, it's
+    match = re.match(r"^([a-zA-Z]+(?:[-'][a-zA-Z]+)*)$", text)
+    if not match:
+        # Try to extract word from text with trailing numbers/periods
+        # Like "primarily1" or "primary."
+        match = re.match(r'^([a-zA-Z]+)[-.\d]*$', text)
+        if not match:
+            return ""
 
+    word = match.group(1).lower()
 
-def extract_words_from_line(line: str) -> List[str]:
-    """
-    Extract English words from a line of text.
+    # Skip if too short (less than 2 characters)
+    if len(word) < 2:
+        return ""
 
-    Args:
-        line: Line of text
+    # Skip common noise words
+    if is_common_noise(word):
+        return ""
 
-    Returns:
-        List of English words
-    """
-    words = []
-
-    # Pattern to match English words (2+ characters)
-    # Also handles cases like "1 primarily" or "primary 2"
-    word_pattern = r'\b([a-zA-Z]{2,})\b'
-
-    matches = re.findall(word_pattern, line)
-
-    for word in matches:
-        # Convert to lowercase
-        word = word.lower()
-
-        # Skip common noise words
-        if is_common_noise(word):
-            continue
-
-        words.append(word)
-
-    return words
+    return word
 
 
 def is_common_noise(word: str) -> bool:

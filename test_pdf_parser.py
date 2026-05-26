@@ -9,64 +9,55 @@ import os
 # Add the scripts directory to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'scripts'))
 
-from pdf_parser import clean_and_extract_words, is_noise, extract_words_from_line, is_common_noise
+from pdf_parser import clean_word, is_common_noise
 
-def test_clean_and_extract_words():
-    """Test the clean_and_extract_words function."""
-    print("Testing clean_and_extract_words...")
+
+def test_clean_word():
+    """Test the clean_word function."""
+    print("Testing clean_word...")
 
     # Test normal word
-    result = clean_and_extract_words("primarily")
-    assert result == ["primarily"], f"Expected ['primarily'], got {result}"
-
-    # Test word with number prefix
-    result = clean_and_extract_words("1 primarily")
-    assert result == ["primarily"], f"Expected ['primarily'], got {result}"
+    assert clean_word("primarily") == "primarily", f"Expected 'primarily', got '{clean_word('primarily')}'"
 
     # Test word with number suffix
-    result = clean_and_extract_words("primary 2")
-    assert result == ["primary"], f"Expected ['primary'], got {result}"
+    assert clean_word("primary2") == "primary", f"Expected 'primary', got '{clean_word('primary2')}'"
 
-    # Test multiple words
-    result = clean_and_extract_words("primarily\nprimary")
-    assert result == ["primarily", "primary"], f"Expected ['primarily', 'primary'], got {result}"
+    # Test word with period suffix
+    assert clean_word("primary.") == "primary", f"Expected 'primary', got '{clean_word('primary.')}'"
 
-    # Test with checkbox symbol
-    result = clean_and_extract_words("☐")
-    assert result == [], f"Expected [], got {result}"
+    # Test hyphenated word
+    assert clean_word("well-known") == "well-known", f"Expected 'well-known', got '{clean_word('well-known')}'"
 
-    # Test with noise
-    result = clean_and_extract_words("Word\nMeaning")
-    assert result == [], f"Expected [], got {result}"
+    # Test word with apostrophe
+    assert clean_word("it's") == "it's", f"Expected \"it's\", got '{clean_word('it')}'"
 
-    print("PASS: clean_and_extract_words tests passed")
+    # Test checkbox symbol
+    assert clean_word("☐") == "", f"Expected '', got '{clean_word('☐')}'"
 
-def test_is_noise():
-    """Test the is_noise function."""
-    print("Testing is_noise...")
+    # Test pure number
+    assert clean_word("123") == "", f"Expected '', got '{clean_word('123')}'"
 
-    assert is_noise("☐") == True
-    assert is_noise("Word\nMeaning") == True
-    assert is_noise("专单 5月25日") == True
-    assert is_noise("不背单词 App") == True
-    assert is_noise("primarily") == False
+    # Test Chinese text
+    assert clean_word("专单") == "", f"Expected '', got '{clean_word('专单')}'"
 
-    print("PASS: is_noise tests passed")
+    # Test noise patterns
+    assert clean_word("Word") == "", f"Expected '', got '{clean_word('Word')}'"
+    assert clean_word("Meaning") == "", f"Expected '', got '{clean_word('Meaning')}'"
+    assert clean_word("不背单词") == "", f"Expected '', got '{clean_word('不背单词')}'"
 
-def test_extract_words_from_line():
-    """Test the extract_words_from_line function."""
-    print("Testing extract_words_from_line...")
+    # Test POS abbreviations
+    assert clean_word("adv") == "", f"Expected '', got '{clean_word('adv')}'"
+    assert clean_word("adj.") == "", f"Expected '', got '{clean_word('adj.')}'"
+    assert clean_word("vi.") == "", f"Expected '', got '{clean_word('vi.')}'"
 
-    result = extract_words_from_line("1 primarily")
-    assert result == ["primarily"], f"Expected ['primarily'], got {result}"
+    # Test single letter with period
+    assert clean_word("n.") == "", f"Expected '', got '{clean_word('n.')}'"
 
-    result = extract_words_from_line("primary 2")
-    assert result == ["primary"], f"Expected ['primary'], got {result}"
+    # Test too short
+    assert clean_word("a") == "", f"Expected '', got '{clean_word('a')}'"
 
-    result = extract_words_from_line("ironic criticize")
-    assert result == ["ironic", "criticize"], f"Expected ['ironic', 'criticize'], got {result}"
+    print("PASS: clean_word tests passed")
 
-    print("PASS: extract_words_from_line tests passed")
 
 def test_is_common_noise():
     """Test the is_common_noise function."""
@@ -79,9 +70,8 @@ def test_is_common_noise():
 
     print("PASS: is_common_noise tests passed")
 
+
 if __name__ == "__main__":
-    test_clean_and_extract_words()
-    test_is_noise()
-    test_extract_words_from_line()
+    test_clean_word()
     test_is_common_noise()
     print("\nPASS: All tests passed!")
