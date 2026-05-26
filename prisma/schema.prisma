@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Article {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  difficulty String   @default("cet4")
+  createdAt  DateTime @default(now())
+  words      Word[]
+}
+
+model Word {
+  id         Int      @id @default(autoincrement())
+  word       String
+  phonetic   String?
+  definition String?
+  chinese    String?
+  example    String?
+  articleId  Int
+  article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+}
