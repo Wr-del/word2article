@@ -107,19 +107,23 @@ def is_noise(text: str) -> bool:
     """
     # Filter patterns
     noise_patterns = [
-        r'^☐$',  # Checkbox symbol
-        r'^Word\s*Meaning$',  # Header
-        r'^Word\n*Meaning$',  # Header with newline
-        r'^专单',  # Chinese header
-        r'^不背单词',  # App name
-        r'^\d+$',  # Pure numbers
-        r'^[a-zA-Z]\.$',  # Single letter with period
-        r'^[A-Z]{2,}$',  # All caps (likely abbreviation)
+        (r'^☐$', False),  # Checkbox symbol
+        (r'^Word\s*Meaning$', False),  # Header
+        (r'^Word\n*Meaning$', False),  # Header with newline
+        (r'^专单', False),  # Chinese header
+        (r'^不背单词', False),  # App name
+        (r'^\d+$', False),  # Pure numbers
+        (r'^[a-zA-Z]\.$', False),  # Single letter with period
+        (r'^[A-Z]{2,}$', True),  # All caps (likely abbreviation) - case sensitive
     ]
 
-    for pattern in noise_patterns:
-        if re.match(pattern, text, re.IGNORECASE):
-            return True
+    for pattern, case_sensitive in noise_patterns:
+        if case_sensitive:
+            if re.match(pattern, text):
+                return True
+        else:
+            if re.match(pattern, text, re.IGNORECASE):
+                return True
 
     # Check if text contains mostly non-ASCII characters (Chinese, etc.)
     non_ascii = sum(1 for c in text if ord(c) > 127)
