@@ -54,3 +54,45 @@ export async function GET(
     )
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: idStr } = await params
+    const id = parseInt(idStr, 10)
+
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { error: 'Invalid article ID' },
+        { status: 400 }
+      )
+    }
+
+    // 检查文章是否存在
+    const article = await prisma.article.findUnique({
+      where: { id },
+    })
+
+    if (!article) {
+      return NextResponse.json(
+        { error: 'Article not found' },
+        { status: 404 }
+      )
+    }
+
+    // 删除文章（关联的单词会因为onDelete: Cascade自动删除）
+    await prisma.article.delete({
+      where: { id },
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Delete article error:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete article' },
+      { status: 500 }
+    )
+  }
+}
