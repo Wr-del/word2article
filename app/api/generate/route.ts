@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { generateArticle } from '@/lib/deepseek'
+import { lookupWord } from '@/lib/dictionary'
+import { translateToChinese } from '@/lib/deepseek'
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,11 +18,58 @@ export async function POST(request: NextRequest) {
     const content = await generateArticle(words, difficulty)
     const title = `${difficulty.toUpperCase()} 阅读 - ${new Date().toLocaleDateString('zh-CN')}`
 
+    // 获取每个单词的词典信息
+    const wordData = await Promise.all(
+      words.map(async (word: string) => {
+        try {
+          const dictResult = await lookupWord(word)
+
+          if (!dictResult) {
+            return {
+              word,
+              phonetic: null,
+              definition: null,
+              chinese: null,
+              example: null,
+            }
+          }
+
+          const chinese = dictResult.definition
+            ? await translateToChinese(word, dictResult.definition)
+            : null
+
+          return {
+            word,
+            phonetic: dictResult.phonetic || null,
+            definition: dictResult.definition || null,
+            chinese,
+            example: dictResult.example || null,
+          }
+        } catch (error) {
+          console.error(`Error looking up word "${word}":`, error)
+          return {
+            word,
+            phonetic: null,
+            definition: null,
+            chinese: null,
+            example: null,
+          }
+        }
+      })
+    )
+
+    // 创建文章并关联单词
     const article = await prisma.article.create({
       data: {
         title,
         content,
         difficulty,
+        words: {
+          create: wordData,
+        },
+      },
+      include: {
+        words: true,
       },
     })
 

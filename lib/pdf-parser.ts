@@ -1,9 +1,12 @@
-import * as pdfjsLib from 'pdfjs-dist'
-
-// 设置worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
-
 export async function extractTextFromPdf(file: File): Promise<string> {
+  // 动态导入pdfjs-dist以避免服务器端渲染问题
+  const pdfjsLib = await import('pdfjs-dist')
+
+  // 设置worker
+  if (typeof window !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+  }
+
   const arrayBuffer = await file.arrayBuffer()
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
 
@@ -13,7 +16,7 @@ export async function extractTextFromPdf(file: File): Promise<string> {
     const page = await pdf.getPage(i)
     const textContent = await page.getTextContent()
     const pageText = textContent.items
-      .map((item: any) => item.str)
+      .map((item) => ('str' in item ? item.str : ''))
       .join(' ')
     fullText += pageText + '\n'
   }
