@@ -1,10 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, unlink, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { exec } from 'child_process'
-import { promisify } from 'util'
-
-const execAsync = promisify(exec)
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,44 +28,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create temp directory if it doesn't exist
-    const tempDir = join(process.cwd(), 'temp')
-    try {
-      await mkdir(tempDir, { recursive: true })
-    } catch {
-      // Directory might already exist
+    // 调用Python Serverless Function
+    const pythonFunctionUrl = process.env.PYTHON_FUNCTION_URL || '/api/parse-pdf/python'
+
+    const pythonFormData = new FormData()
+    pythonFormData.append('file', file)
+
+    const response = await fetch(pythonFunctionUrl, {
+      method: 'POST',
+      body: pythonFormData,
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || 'Python function failed')
     }
 
-    // Save file to temp directory
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    const tempFile = join(tempDir, `pdf_${Date.now()}.pdf`)
-    await writeFile(tempFile, buffer)
-
-    try {
-      // Call Python script to parse PDF
-      const scriptPath = join(process.cwd(), 'scripts', 'pdf_parser.py')
-      const { stdout, stderr } = await execAsync(
-        `python "${scriptPath}" "${tempFile}"`,
-        { timeout: 30000 } // 30 second timeout
-      )
-
-      if (stderr) {
-        console.error('Python script stderr:', stderr)
-      }
-
-      // Parse JSON output
-      const words = JSON.parse(stdout.trim())
-
-      return NextResponse.json({ words })
-    } finally {
-      // Clean up temp file
-      try {
-        await unlink(tempFile)
-      } catch {
-        // Ignore cleanup errors
-      }
-    }
+    const data = await response.json()
+    return NextResponse.json({ words: data.words })
   } catch (error) {
     console.error('PDF parsing error:', error)
     return NextResponse.json(
