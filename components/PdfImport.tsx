@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { extractTextFromPdf, extractWordsFromText } from '@/lib/pdf-parser'
 
 interface PdfImportProps {
   onImport: (words: string[]) => void
@@ -10,10 +9,8 @@ interface PdfImportProps {
 
 export default function PdfImport({ onImport, onClose }: PdfImportProps) {
   const [file, setFile] = useState<File | null>(null)
-  const [mode, setMode] = useState<'auto' | 'manual'>('auto')
   const [extractedWords, setExtractedWords] = useState<string[]>([])
   const [selectedWords, setSelectedWords] = useState<Set<string>>(new Set())
-  const [pdfText, setPdfText] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -37,34 +34,28 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
     setLoading(true)
 
     try {
-      const text = await extractTextFromPdf(selectedFile)
-      setPdfText(text)
+      // Create FormData and send to server
+      const formData = new FormData()
+      formData.append('file', selectedFile)
 
-      if (mode === 'auto') {
-        const words = extractWordsFromText(text)
-        setExtractedWords(words)
-        setSelectedWords(new Set(words))
+      const response = await fetch('/api/parse-pdf', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || '解析失败')
       }
+
+      const data = await response.json()
+      setExtractedWords(data.words)
+      setSelectedWords(new Set(data.words))
     } catch (err) {
-      setError('解析PDF失败，请检查文件格式')
+      setError(err instanceof Error ? err.message : '解析PDF失败，请检查文件格式')
       console.error(err)
     } finally {
       setLoading(false)
-    }
-  }
-
-  const handleModeChange = async (newMode: 'auto' | 'manual') => {
-    setMode(newMode)
-
-    if (file && pdfText) {
-      if (newMode === 'auto') {
-        const words = extractWordsFromText(pdfText)
-        setExtractedWords(words)
-        setSelectedWords(new Set(words))
-      } else {
-        setExtractedWords([])
-        setSelectedWords(new Set())
-      }
     }
   }
 
@@ -95,6 +86,7 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
+            aria-label="关闭"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -110,38 +102,15 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
             accept=".pdf"
             onChange={handleFileChange}
             className="hidden"
+            aria-label="选择PDF文件"
           />
           <button
             onClick={() => fileInputRef.current?.click()}
             className="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
           >
-            {file ? file.name : '点击选择PDF文件'}
+            {file ? file.name : '点击选择PDF文件（支持不背单词导出格式）'}
           </button>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        </div>
-
-        {/* 模式选择 */}
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={() => handleModeChange('auto')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              mode === 'auto'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-          >
-            自动解析
-          </button>
-          <button
-            onClick={() => handleModeChange('manual')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              mode === 'manual'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-          >
-            手动选择
-          </button>
         </div>
 
         {/* 加载状态 */}
@@ -152,8 +121,8 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
           </div>
         )}
 
-        {/* 自动解析结果 */}
-        {mode === 'auto' && extractedWords.length > 0 && !loading && (
+        {/* 解析结果 */}
+        {extractedWords.length > 0 && !loading && (
           <div className="mb-4">
             <h3 className="font-medium mb-2">
               提取的单词 ({extractedWords.length}个)
@@ -172,33 +141,6 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
                   {word}
                 </button>
               ))}
-            </div>
-          </div>
-        )}
-
-        {/* 手动选择模式 */}
-        {mode === 'manual' && pdfText && !loading && (
-          <div className="mb-4">
-            <h3 className="font-medium mb-2">PDF内容（点击选择单词）</h3>
-            <div className="p-4 border rounded-lg max-h-60 overflow-y-auto bg-gray-50">
-              {pdfText.split(/\s+/).map((word, index) => {
-                const cleanWord = word.replace(/[^a-zA-Z]/g, '').toLowerCase()
-                if (cleanWord.length < 2) return <span key={index}>{word} </span>
-
-                return (
-                  <button
-                    key={index}
-                    onClick={() => toggleWord(cleanWord)}
-                    className={`inline-block m-0.5 px-1 rounded ${
-                      selectedWords.has(cleanWord)
-                        ? 'bg-blue-200 text-blue-800'
-                        : 'hover:bg-gray-200'
-                    }`}
-                  >
-                    {word}
-                  </button>
-                )
-              })}
             </div>
           </div>
         )}
