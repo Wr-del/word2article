@@ -37,53 +37,54 @@ export default function WordPopup({ word, position, onClose }: WordPopupProps) {
     fetchWord()
   }, [word])
 
+  // 计算位置，防止溢出屏幕
+  const left = Math.max(10, Math.min(position.x, window.innerWidth - 230))
+  const top = position.y + 10
+
   return (
     <div
       className="fixed z-50"
-      style={{ left: position.x, top: position.y }}
+      style={{ left, top }}
     >
-      <div className="bg-white rounded-lg shadow-xl border p-4 max-w-sm relative -translate-x-1/2 mt-2">
+      <div className="bg-[#080d19]/90 backdrop-blur-xl text-slate-100 p-3.5 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.6)] border border-slate-800/80 text-xs max-w-[220px] leading-relaxed">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+          className="absolute top-2 right-2 text-slate-500 hover:text-slate-300 p-1"
         >
-          ✕
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
 
         {loading ? (
-          <div className="text-center py-4">加载中...</div>
+          <div className="text-center py-3">
+            <div className="w-4 h-4 rounded-full border border-slate-800 border-t-brand-500 animate-spin mx-auto"></div>
+          </div>
         ) : data ? (
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div>
-              <span className="text-xl font-bold text-blue-600">{data.word}</span>
+              <span className="font-bold text-brand-500">{data.word}</span>
               {data.phonetic && (
-                <span className="ml-2 text-gray-500">{data.phonetic}</span>
+                <span className="ml-2 text-slate-500">{data.phonetic}</span>
               )}
             </div>
 
             {data.chinese && (
-              <div>
-                <div className="text-sm text-gray-500 mb-1">中文释义</div>
-                <div className="text-lg">{data.chinese}</div>
-              </div>
+              <div className="text-slate-400 font-medium">{data.chinese}</div>
             )}
 
             {data.definition && (
-              <div>
-                <div className="text-sm text-gray-500 mb-1">英文释义</div>
-                <div className="text-sm text-gray-700">{data.definition}</div>
-              </div>
+              <div className="text-slate-500 text-[11px]">{data.definition}</div>
             )}
 
             {data.example && (
-              <div>
-                <div className="text-sm text-gray-500 mb-1">例句</div>
-                <div className="text-sm italic text-gray-600">{data.example}</div>
+              <div className="text-slate-500 text-[11px] italic border-t border-slate-800/60 pt-2 mt-2">
+                {data.example}
               </div>
             )}
           </div>
         ) : (
-          <div className="text-center py-4 text-gray-500">未找到释义</div>
+          <div className="text-center py-3 text-slate-500">暂无释义</div>
         )}
       </div>
     </div>

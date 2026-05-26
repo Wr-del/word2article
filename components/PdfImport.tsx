@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 
 interface PdfImportProps {
   onImport: (words: string[]) => void
@@ -13,12 +13,10 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
   const [selectedWords, setSelectedWords] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]
-    if (!selectedFile) return
-
+  const processFile = useCallback(async (selectedFile: File) => {
     if (selectedFile.type !== 'application/pdf') {
       setError('请选择PDF文件')
       return
@@ -56,7 +54,36 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
     } finally {
       setLoading(false)
     }
+  }, [])
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0]
+    if (selectedFile) {
+      processFile(selectedFile)
+    }
   }
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(true)
+  }, [])
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(false)
+  }, [])
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(false)
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      processFile(e.dataTransfer.files[0])
+    }
+  }, [processFile])
 
   const toggleWord = (word: string) => {
     const newSelected = new Set(selectedWords)
@@ -105,8 +132,15 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
 
           {/* 拖放上传区 */}
           <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className="border border-dashed border-slate-800 rounded-xl p-6 text-center cursor-pointer transition-all duration-150 bg-slate-950/30 hover:border-brand-500/40 group"
+            className={`border border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-150 bg-slate-950/30 ${
+              isDragOver
+                ? 'border-brand-500/50 bg-brand-500/5'
+                : 'border-slate-800 hover:border-brand-500/40'
+            } group`}
           >
             <input
               ref={fileInputRef}
@@ -117,7 +151,7 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
               aria-label="选择PDF文件"
             />
             <div className="flex flex-col items-center gap-2.5 text-slate-500">
-              <div className="p-2.5 bg-slate-900 text-slate-400 border border-slate-800 rounded-xl transition-transform duration-300 group-hover:scale-105">
+              <div className={`p-2.5 bg-slate-900 text-slate-400 border border-slate-800 rounded-xl transition-transform duration-300 group-hover:scale-105 ${isDragOver ? 'scale-110 border-brand-500/50' : ''}`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>

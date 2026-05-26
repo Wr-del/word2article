@@ -51,7 +51,7 @@ export default function ArticleView({ content, words }: ArticleViewProps) {
           <span
             key={match.index}
             onClick={(e) => handleWordClick(matchedWord, e)}
-            className="bg-yellow-200 hover:bg-yellow-300 cursor-pointer px-0.5 rounded transition-colors"
+            className="premium-highlight cursor-help transition-all duration-150 select-none word-badge"
           >
             {matchedWord}
           </span>
@@ -72,7 +72,7 @@ export default function ArticleView({ content, words }: ArticleViewProps) {
 
   return (
     <div className="relative">
-      <div className="prose prose-lg max-w-none leading-relaxed">
+      <div className="text-slate-300 leading-relaxed font-serif text-[16.5px] md:text-[17.5px] tracking-wide space-y-4">
         {renderContent()}
       </div>
 

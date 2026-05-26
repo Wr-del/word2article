@@ -1,15 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface WordInputProps {
   onSubmit: (words: string[], difficulty: string) => void
   loading: boolean
+  initialText?: string
 }
 
-export default function WordInput({ onSubmit, loading }: WordInputProps) {
+export default function WordInput({ onSubmit, loading, initialText = '' }: WordInputProps) {
   const [text, setText] = useState('')
   const [difficulty, setDifficulty] = useState('cet4')
+
+  // 当initialText变化时，更新文本框内容
+  useEffect(() => {
+    if (initialText) {
+      setText(initialText)
+    }
+  }, [initialText])
 
   const handleSubmit = async () => {
     if (!text.trim()) return

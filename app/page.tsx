@@ -9,6 +9,7 @@ export default function Home() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [showPdfImport, setShowPdfImport] = useState(false)
+  const [importedText, setImportedText] = useState('')
 
   const handleSubmit = async (words: string[], difficulty: string) => {
     setLoading(true)
@@ -31,9 +32,10 @@ export default function Home() {
     }
   }
 
-  const handlePdfImport = async (words: string[]) => {
+  const handlePdfImport = (words: string[]) => {
     setShowPdfImport(false)
-    await handleSubmit(words, 'cet4')
+    // 将导入的单词填入输入框，而不是直接生成
+    setImportedText(words.join(', '))
   }
 
   return (
@@ -46,7 +48,11 @@ export default function Home() {
 
       {/* 核心中央卡片 */}
       <div className="glass-card rounded-2xl custom-shadow p-5 md:p-6 space-y-5 hover:border-slate-800/60 transition-all duration-300">
-        <WordInput onSubmit={handleSubmit} loading={loading} />
+        <WordInput
+          onSubmit={handleSubmit}
+          loading={loading}
+          initialText={importedText}
+        />
 
         {/* 分割线 */}
         <div className="border-t border-slate-900/60"></div>
