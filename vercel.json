@@ -1,13 +1,7 @@
 {
   "functions": {
-    "api/parse-pdf/index.py": {
+    "api/parse-pdf-python/index.py": {
       "runtime": "python3.9"
     }
-  },
-  "rewrites": [
-    {
-      "source": "/api/parse-pdf/python",
-      "destination": "/api/parse-pdf"
-    }
-  ]
+  }
 }

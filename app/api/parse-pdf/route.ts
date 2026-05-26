@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 调用Python Serverless Function
-    const pythonFunctionUrl = process.env.PYTHON_FUNCTION_URL || '/api/parse-pdf/python'
+    const pythonFunctionUrl = process.env.PYTHON_FUNCTION_URL || '/api/parse-pdf-python'
 
     const pythonFormData = new FormData()
     pythonFormData.append('file', file)
