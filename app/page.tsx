@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import WordInput from '@/components/WordInput'
+import PdfImport from '@/components/PdfImport'
 
 export default function Home() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [showPdfImport, setShowPdfImport] = useState(false)
 
   const handleSubmit = async (words: string[], difficulty: string) => {
     setLoading(true)
@@ -29,6 +31,12 @@ export default function Home() {
     }
   }
 
+  const handlePdfImport = async (words: string[]) => {
+    setShowPdfImport(false)
+    // 使用默认难度，直接生成文章
+    await handleSubmit(words, 'cet4')
+  }
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-2xl mx-auto py-12 px-4">
@@ -39,6 +47,15 @@ export default function Home() {
 
         <div className="bg-white rounded-xl shadow-sm p-6">
           <WordInput onSubmit={handleSubmit} loading={loading} />
+
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <button
+              onClick={() => setShowPdfImport(true)}
+              className="w-full px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+            >
+              从PDF导入单词
+            </button>
+          </div>
         </div>
 
         <div className="mt-6 text-center">
@@ -50,6 +67,14 @@ export default function Home() {
           </a>
         </div>
       </div>
+
+      {/* PDF导入弹窗 */}
+      {showPdfImport && (
+        <PdfImport
+          onImport={handlePdfImport}
+          onClose={() => setShowPdfImport(false)}
+        />
+      )}
     </main>
   )
 }
