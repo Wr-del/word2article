@@ -33,6 +33,7 @@ export async function GET(
         id: article.id,
         title: article.title,
         content: article.content,
+        translation: article.translation,
         difficulty: article.difficulty,
         createdAt: article.createdAt.toISOString(),
         words: article.words.map(word => ({
