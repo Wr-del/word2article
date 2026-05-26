@@ -85,9 +85,10 @@ export default function HistoryPage() {
       ) : (
         <div className="space-y-4">
           {articles.map((article, idx) => (
-            <div
+            <a
               key={article.id}
-              className="glass-card p-4 rounded-xl custom-shadow space-y-3 relative group hover:border-slate-800 transition-all duration-300"
+              href={`/article/${article.id}`}
+              className="block glass-card p-4 rounded-xl custom-shadow space-y-3 relative group hover:border-slate-800 transition-all duration-300 cursor-pointer"
               style={{ animationDelay: `${idx * 40}ms` }}
             >
               <div className="flex items-center justify-between">
@@ -118,19 +119,8 @@ export default function HistoryPage() {
                 </button>
               </div>
               <div className="text-xs text-slate-400 font-medium">{article.title}</div>
-              <div className="pt-2 border-t border-slate-900/60 flex justify-between items-center">
-                <span className="text-[10px] text-slate-600">{article.wordCount} 个单词</span>
-                <a
-                  href={`/article/${article.id}`}
-                  className="text-[10px] text-brand-500 hover:text-brand-600 font-bold flex items-center gap-1 transition-all duration-200 hover:translate-x-0.5"
-                >
-                  重新加载阅读
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </a>
-              </div>
-            </div>
+              <div className="text-[10px] text-slate-600">{article.wordCount} 个单词</div>
+            </a>
           ))}
         </div>
       )}
