@@ -8,12 +8,13 @@ datasource db {
 }
 
 model Article {
-  id         Int      @id @default(autoincrement())
-  title      String
-  content    String
-  difficulty String   @default("cet4")
-  createdAt  DateTime @default(now())
-  words      Word[]
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  translation String?
+  difficulty  String   @default("cet4")
+  createdAt   DateTime @default(now())
+  words       Word[]
 }
 
 model Word {

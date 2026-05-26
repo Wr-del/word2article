@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { generateArticle } from '@/lib/deepseek'
+import { generateArticle, translateArticleToChinese } from '@/lib/deepseek'
 import { lookupWord } from '@/lib/dictionary'
 import { translateToChinese } from '@/lib/deepseek'
 
@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     const content = await generateArticle(words, difficulty)
+    const translation = await translateArticleToChinese(content)
     const title = `${difficulty.toUpperCase()} 阅读 - ${new Date().toLocaleDateString('zh-CN')}`
 
     // 获取每个单词的词典信息
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
       data: {
         title,
         content,
+        translation,
         difficulty,
         words: {
           create: wordData,

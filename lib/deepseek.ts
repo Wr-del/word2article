@@ -72,3 +72,17 @@ export async function translateToChinese(word: string, definition: string): Prom
     { role: 'user', content: prompt }
   ])
 }
+
+export async function translateArticleToChinese(content: string): Promise<string> {
+  const prompt = `请将以下英文文章翻译成中文，要求：
+1. 翻译准确自然，符合中文表达习惯
+2. 保持原文段落结构
+3. 只返回中文翻译，不要添加任何说明或注释
+
+英文文章：
+${content}`
+
+  return callDeepSeek([
+    { role: 'user', content: prompt }
+  ])
+}

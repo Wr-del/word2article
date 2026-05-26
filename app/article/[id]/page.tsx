@@ -8,6 +8,7 @@ interface ArticleData {
   id: number
   title: string
   content: string
+  translation: string | null
   difficulty: string
   words: Array<{
     word: string
@@ -86,6 +87,17 @@ export default function ArticlePage() {
           </div>
 
           <ArticleView content={article.content} words={wordList} />
+
+          {article.translation && (
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <h2 className="text-lg font-semibold mb-4 text-gray-700">中文翻译</h2>
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+                  {article.translation}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="mt-6 text-center space-x-4">
