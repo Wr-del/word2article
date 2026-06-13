@@ -174,7 +174,7 @@ export default function QuizPage() {
             return (
               <button
                 key={index}
-                onClick={() => handleAnswer(option.chinese)}
+                onClick={() => handleAnswer(option.chinese || '')}
                 disabled={showResult}
                 className={buttonClass}
               >
