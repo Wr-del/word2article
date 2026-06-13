@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from 'react'
 
+const STYLE_LABELS: Record<string, string> = { story: '故事', news: '新闻', science: '科普', dialogue: '对话' }
+
 interface ArticleSummary {
   id: number
   title: string
   wordCount: number
   difficulty: string
+  style: string
   createdAt: string
 }
 
@@ -23,9 +26,10 @@ export default function HistoryPage() {
     try {
       const response = await fetch('/api/articles')
       const data = await response.json()
-      setArticles(data.articles)
+      setArticles(data.articles || [])
     } catch (error) {
       console.error('Fetch articles error:', error)
+      setArticles([])
     } finally {
       setLoading(false)
     }
@@ -96,7 +100,10 @@ export default function HistoryPage() {
                   <span className="text-[10px] bg-slate-950 border border-slate-900 text-slate-400 px-2 py-0.5 rounded font-bold">
                     {article.difficulty.toUpperCase()}
                   </span>
-                  <span className="text-[10px] text-slate-600">
+                  <span className="text-[10px] bg-slate-950 border border-slate-900 text-slate-500 px-2 py-0.5 rounded font-bold">
+                    {STYLE_LABELS[article.style] || '阅读'}
+                  </span>
+                  <span className="text-[10px] text-slate-600" suppressHydrationWarning>
                     {new Date(article.createdAt).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>

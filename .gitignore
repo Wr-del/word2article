@@ -45,3 +45,13 @@ next-env.d.ts
 *.db-journal
 
 /app/generated/prisma
+
+# data files
+data/
+ecdict.csv.7z
+
+# test files
+test-*.ts
+
+# mini program (separate project)
+word2article-taro/

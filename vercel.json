@@ -1,7 +1,4 @@
 {
-  "functions": {
-    "api/parse-pdf-python/index.py": {
-      "runtime": "python3.9"
-    }
-  }
+  "buildCommand": "prisma migrate deploy && prisma generate && next build",
+  "framework": "nextjs"
 }

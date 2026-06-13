@@ -35,6 +35,7 @@ export async function GET(
         content: article.content,
         translation: article.translation,
         difficulty: article.difficulty,
+        style: article.style,
         createdAt: article.createdAt.toISOString(),
         words: article.words.map(word => ({
           id: word.id,

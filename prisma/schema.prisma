@@ -13,6 +13,7 @@ model Article {
   content     String
   translation String?
   difficulty  String   @default("cet4")
+  style       String   @default("story")
   createdAt   DateTime @default(now())
   words       Word[]
 }
@@ -26,4 +27,13 @@ model Word {
   example    String?
   articleId  Int
   article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+}
+
+model Favorite {
+  id         Int      @id @default(autoincrement())
+  word       String   @unique
+  phonetic   String?
+  definition String?
+  chinese    String?
+  createdAt  DateTime @default(now())
 }

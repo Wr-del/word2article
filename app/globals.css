@@ -136,6 +136,23 @@
   transform: translateY(-1px);
 }
 
+/* 变形单词高亮样式 */
+.deformation-highlight {
+  position: relative;
+  background: rgba(59, 130, 246, 0.06);
+  border-bottom: 1.5px dotted rgba(59, 130, 246, 0.35);
+  padding: 1px 5px;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.deformation-highlight:hover, .deformation-highlight:active {
+  background: rgba(59, 130, 246, 0.14);
+  border-bottom-style: solid;
+  border-bottom-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
 /* 苹果灵动岛 Toast 专属降落动画 */
 @keyframes dynamic-island-in {
   0% { transform: translate(-50%, -40px) scale(0.85); opacity: 0; filter: blur(4px); }

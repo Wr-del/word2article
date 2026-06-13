@@ -11,13 +11,13 @@ export default function Home() {
   const [showPdfImport, setShowPdfImport] = useState(false)
   const [importedText, setImportedText] = useState('')
 
-  const handleSubmit = async (words: string[], difficulty: string) => {
+  const handleSubmit = async (words: string[], difficulty: string, style: string) => {
     setLoading(true)
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ words, difficulty }),
+        body: JSON.stringify({ words, difficulty, style }),
       })
 
       const data = await response.json()

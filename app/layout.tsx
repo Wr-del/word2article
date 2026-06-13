@@ -49,6 +49,9 @@ export default function RootLayout({
               <a href="/" className="text-xs font-semibold text-brand-500 transition-colors">
                 首页
               </a>
+              <a href="/favorites" className="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5">
+                生词本
+              </a>
               <a href="/history" className="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5">
                 历史记录
               </a>

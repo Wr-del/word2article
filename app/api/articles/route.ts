@@ -18,6 +18,7 @@ export async function GET() {
         title: article.title,
         wordCount: article._count.words,
         difficulty: article.difficulty,
+        style: article.style,
         createdAt: article.createdAt.toISOString(),
       })),
     })

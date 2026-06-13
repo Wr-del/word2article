@@ -6,7 +6,7 @@ import { translateToChinese } from '@/lib/deepseek'
 
 export async function POST(request: NextRequest) {
   try {
-    const { words, difficulty = 'cet4' } = await request.json()
+    const { words, difficulty = 'cet4', style = 'story' } = await request.json()
 
     if (!words || !Array.isArray(words) || words.length === 0) {
       return NextResponse.json(
@@ -15,17 +15,42 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const content = await generateArticle(words, difficulty)
+    const content = await generateArticle(words, difficulty, style)
     const translation = await translateArticleToChinese(content)
-    const title = `${difficulty.toUpperCase()} 阅读 - ${new Date().toLocaleDateString('zh-CN')}`
+    const STYLE_LABELS: Record<string, string> = { story: '故事', news: '新闻', science: '科普', dialogue: '对话' }
+    const title = `${difficulty.toUpperCase()} · ${STYLE_LABELS[style] || '阅读'} - ${new Date().toLocaleDateString('zh-CN')}`
 
     // 获取每个单词的词典信息
+    // 关键改进：无论词典查询是否成功，都调用 DeepSeek 获取中文翻译
     const wordData = await Promise.all(
       words.map(async (word: string) => {
         try {
-          const dictResult = await lookupWord(word)
+          // 并行查询词典和 DeepSeek 翻译
+          const [dictResult, chinese] = await Promise.all([
+            lookupWord(word),
+            translateToChinese(word)
+          ])
 
-          if (!dictResult) {
+          return {
+            word,
+            phonetic: dictResult?.phonetic || null,
+            definition: dictResult?.definition || null,
+            chinese: chinese || null,
+            example: dictResult?.example || null,
+          }
+        } catch (error) {
+          console.error(`Error looking up word "${word}":`, error)
+          // 即使出错也尝试获取中文翻译
+          try {
+            const chinese = await translateToChinese(word)
+            return {
+              word,
+              phonetic: null,
+              definition: null,
+              chinese: chinese || null,
+              example: null,
+            }
+          } catch {
             return {
               word,
               phonetic: null,
@@ -33,27 +58,6 @@ export async function POST(request: NextRequest) {
               chinese: null,
               example: null,
             }
-          }
-
-          const chinese = dictResult.definition
-            ? await translateToChinese(word, dictResult.definition)
-            : null
-
-          return {
-            word,
-            phonetic: dictResult.phonetic || null,
-            definition: dictResult.definition || null,
-            chinese,
-            example: dictResult.example || null,
-          }
-        } catch (error) {
-          console.error(`Error looking up word "${word}":`, error)
-          return {
-            word,
-            phonetic: null,
-            definition: null,
-            chinese: null,
-            example: null,
           }
         }
       })
@@ -66,6 +70,7 @@ export async function POST(request: NextRequest) {
         content,
         translation,
         difficulty,
+        style,
         words: {
           create: wordData,
         },

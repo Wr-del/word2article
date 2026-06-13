@@ -20,9 +20,11 @@ export async function GET(request: NextRequest) {
     // 先查缓存
     const cached = await prisma.word.findFirst({
       where: { word: normalizedWord },
+      orderBy: { id: 'desc' },
     })
 
-    if (cached) {
+    // 如果缓存完整（有中文翻译和音标），直接返回
+    if (cached && cached.chinese && cached.phonetic) {
       return NextResponse.json({
         word: cached.word,
         phonetic: cached.phonetic,
@@ -32,33 +34,63 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // 查 Free Dictionary API
-    const dictResult = await lookupWord(normalizedWord)
+    // 并行查询本地词典/远程词典和翻译
+    const [dictResult, chinese] = await Promise.all([
+      lookupWord(normalizedWord),
+      cached?.chinese ? Promise.resolve(cached.chinese) : translateToChinese(normalizedWord),
+    ])
 
-    // 调用 DeepSeek 翻译
-    const chinese = await translateToChinese(
-      normalizedWord,
-      dictResult?.definition ?? ''
-    )
+    // 尝试更新或创建缓存
+    try {
+      // 查找或创建缓存文章
+      let cacheArticle = await prisma.article.findFirst({
+        where: { title: '__cache__' },
+      })
 
-    // 保存到缓存
-    const wordEntry = await prisma.word.create({
-      data: {
-        word: normalizedWord,
-        phonetic: dictResult?.phonetic ?? null,
-        definition: dictResult?.definition ?? null,
-        chinese,
-        example: dictResult?.example ?? null,
-        articleId: 0, // 通用缓存
-      },
-    })
+      if (!cacheArticle) {
+        cacheArticle = await prisma.article.create({
+          data: {
+            title: '__cache__',
+            content: 'This is a cache article for storing word translations.',
+            difficulty: 'cet4',
+          },
+        })
+      }
 
+      // 如果有旧缓存，更新它；否则创建新记录
+      if (cached) {
+        await prisma.word.update({
+          where: { id: cached.id },
+          data: {
+            phonetic: dictResult?.phonetic ?? cached.phonetic,
+            definition: dictResult?.definition ?? cached.definition,
+            chinese: chinese ?? cached.chinese,
+            example: dictResult?.example ?? cached.example,
+          },
+        })
+      } else {
+        await prisma.word.create({
+          data: {
+            word: normalizedWord,
+            phonetic: dictResult?.phonetic ?? null,
+            definition: dictResult?.definition ?? null,
+            chinese: chinese ?? null,
+            example: dictResult?.example ?? null,
+            articleId: cacheArticle.id,
+          },
+        })
+      }
+    } catch (cacheError) {
+      console.error('Failed to cache translation:', cacheError)
+    }
+
+    // 返回完整数据
     return NextResponse.json({
-      word: wordEntry.word,
-      phonetic: wordEntry.phonetic,
-      definition: wordEntry.definition,
-      chinese: wordEntry.chinese,
-      example: wordEntry.example,
+      word: normalizedWord,
+      phonetic: dictResult?.phonetic ?? cached?.phonetic ?? null,
+      definition: dictResult?.definition ?? cached?.definition ?? null,
+      chinese: chinese ?? cached?.chinese ?? null,
+      example: dictResult?.example ?? cached?.example ?? null,
     })
   } catch (error) {
     console.error('Translate error:', error)

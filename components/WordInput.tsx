@@ -3,14 +3,22 @@
 import { useState, useEffect } from 'react'
 
 interface WordInputProps {
-  onSubmit: (words: string[], difficulty: string) => void
+  onSubmit: (words: string[], difficulty: string, style: string) => void
   loading: boolean
   initialText?: string
 }
 
+const STYLES = [
+  { id: 'story', label: '故事', icon: '📖' },
+  { id: 'news', label: '新闻', icon: '📰' },
+  { id: 'science', label: '科普', icon: '🔬' },
+  { id: 'dialogue', label: '对话', icon: '💬' },
+]
+
 export default function WordInput({ onSubmit, loading, initialText = '' }: WordInputProps) {
   const [text, setText] = useState('')
   const [difficulty, setDifficulty] = useState('cet4')
+  const [style, setStyle] = useState('story')
 
   // 当initialText变化时，更新文本框内容
   useEffect(() => {
@@ -30,7 +38,7 @@ export default function WordInput({ onSubmit, loading, initialText = '' }: WordI
 
     const data = await response.json()
     if (data.words && data.words.length > 0) {
-      onSubmit(data.words, difficulty)
+      onSubmit(data.words, difficulty, style)
     }
   }
 
@@ -57,6 +65,24 @@ export default function WordInput({ onSubmit, loading, initialText = '' }: WordI
             </svg>
           </button>
         )}
+      </div>
+
+      {/* 文章风格 */}
+      <div className="flex items-center gap-1.5">
+        <span className="text-[10px] text-slate-600 mr-1">风格</span>
+        {STYLES.map((s) => (
+          <button
+            key={s.id}
+            onClick={() => setStyle(s.id)}
+            className={`px-2.5 py-1.5 text-[10px] font-bold rounded-lg transition-all duration-150 ${
+              style === s.id
+                ? 'bg-slate-800 text-slate-100'
+                : 'text-slate-500 hover:text-slate-300'
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
       </div>
 
       {/* 词汇分类与生成按钮 */}
