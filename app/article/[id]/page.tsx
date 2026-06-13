@@ -210,7 +210,7 @@ export default function ArticlePage() {
                           {d.type}
                         </span>
                       )}
-                      <span className="text-[10px] text-slate-600">({d.chinese})</span>
+                      <span className="text-[10px] text-slate-600">({d.chinese || ''})</span>
                     </div>
                   </div>
                 ))}

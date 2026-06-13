@@ -30,15 +30,26 @@ export default function WordInput({ onSubmit, loading, initialText = '' }: WordI
   const handleSubmit = async () => {
     if (!text.trim()) return
 
-    const response = await fetch('/api/extract', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-    })
+    try {
+      const response = await fetch('/api/extract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      })
 
-    const data = await response.json()
-    if (data.words && data.words.length > 0) {
-      onSubmit(data.words, difficulty, style)
+      if (!response.ok) {
+        throw new Error('提取单词失败')
+      }
+
+      const data = await response.json()
+      if (data.words && data.words.length > 0) {
+        onSubmit(data.words, difficulty, style)
+      } else {
+        alert('未能识别出有效单词，请检查输入格式')
+      }
+    } catch (error) {
+      console.error('Extract error:', error)
+      alert('提取单词失败，请重试')
     }
   }
 

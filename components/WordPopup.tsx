@@ -152,8 +152,14 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
   }, [word, lookupWord])
 
   // 计算位置，防止溢出屏幕
-  const left = Math.max(10, Math.min(position.x, window.innerWidth - 230))
-  const top = position.y + 10
+  const popupWidth = 220
+  const popupHeight = 200 // 估算高度
+  const left = Math.max(10, Math.min(position.x - popupWidth / 2, window.innerWidth - popupWidth - 10))
+  // 如果下方空间不足，显示在上方
+  const spaceBelow = window.innerHeight - position.y
+  const top = spaceBelow < popupHeight + 20
+    ? position.y - popupHeight - 10
+    : position.y + 10
 
   return (
     <div

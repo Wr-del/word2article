@@ -84,7 +84,16 @@ export default function HistoryPage() {
           <svg className="w-6 h-6 mx-auto mb-2 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-xs">暂无历史记录，去首页生成文章吧！</p>
+          <p className="text-xs mb-4">暂无历史记录</p>
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-brand-500 hover:text-brand-400 bg-brand-500/10 hover:bg-brand-500/20 rounded-lg transition-all duration-200"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            去生成文章
+          </a>
         </div>
       ) : (
         <div className="space-y-4">
