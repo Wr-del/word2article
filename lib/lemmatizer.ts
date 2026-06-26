@@ -300,82 +300,7 @@ export function getLemmas(word: string): string[] {
   }
 
   // 4. 规则变形处理
-  const rules = [
-    // 动词变形
-    { pattern: /ied$/, replacement: 'y', type: '过去式' as DeformationType },  // studied -> study
-    { pattern: /([^aeiou])ies$/, replacement: '$1y', type: '复数' as DeformationType },  // cities -> city
-    { pattern: /(?:sh|ch|ss|x|z|o)es$/, replacement: '', type: '复数' as DeformationType },  // boxes -> box
-    { pattern: /ves$/, replacement: 'f', type: '复数' as DeformationType },  // leaves -> leaf
-    { pattern: /ves$/, replacement: 'fe', type: '复数' as DeformationType },  // knives -> knife
-    { pattern: /([^s])es$/, replacement: '$1', type: '复数' as DeformationType },  // horses -> horse
-    { pattern: /([^aeiouy][aeiouy])([^aeiouy])ed$/, replacement: '$1$2', type: '过去式' as DeformationType },  // stopped -> stop
-    { pattern: /([^e])ed$/, replacement: '$1e', type: '过去式' as DeformationType },  // hoped -> hope
-    { pattern: /ed$/, replacement: '', type: '过去式' as DeformationType },  // walked -> walk
-    { pattern: /([^aeiouy][aeiouy])([^aeiouy])ing$/, replacement: '$1$2', type: '进行时' as DeformationType },  // running -> run
-    { pattern: /([^e])ing$/, replacement: '$1e', type: '进行时' as DeformationType },  // hoping -> hope
-    { pattern: /ing$/, replacement: '', type: '进行时' as DeformationType },  // walking -> walk
-    { pattern: /([^aeiouy][aeiouy])([^aeiouy])er$/, replacement: '$1$2', type: '比较级' as DeformationType },  // bigger -> big
-    { pattern: /([^e])er$/, replacement: '$1e', type: '比较级' as DeformationType },  // nicer -> nice
-    { pattern: /er$/, replacement: '', type: '比较级' as DeformationType },  // taller -> tall
-    { pattern: /([^aeiouy][aeiouy])([^aeiouy])est$/, replacement: '$1$2', type: '最高级' as DeformationType },  // biggest -> big
-    { pattern: /([^e])est$/, replacement: '$1e', type: '最高级' as DeformationType },  // nicest -> nice
-    { pattern: /est$/, replacement: '', type: '最高级' as DeformationType },  // tallest -> tall
-    { pattern: /([^aeiouy][aeiouy])([^aeiouy])ly$/, replacement: '$1$2', type: '副词' as DeformationType },  // happily -> happy
-    { pattern: /([^l])ly$/, replacement: '$1', type: '副词' as DeformationType },  // slowly -> slow
-    { pattern: /([^aeiouy])ily$/, replacement: 'y', type: '副词' as DeformationType },  // happily -> happy
-    { pattern: /ally$/, replacement: '', type: '副词' as DeformationType },  // basically -> basic
-    { pattern: /ly$/, replacement: '', type: '副词' as DeformationType },  // simply -> simple
-    { pattern: /([^s])s$/, replacement: '$1', type: '第三人称单数' as DeformationType },  // walks -> walk
-
-    // 名词后缀变形 (动词/形容词 -> 名词)
-    { pattern: /ation$/, replacement: 'e', type: '名词形式' as DeformationType },  // creation -> create
-    { pattern: /ation$/, replacement: '', type: '名词形式' as DeformationType },  // relaxation -> relax
-    { pattern: /tion$/, replacement: 'te', type: '名词形式' as DeformationType },  // exhaustion -> exhauste (不常见)
-    { pattern: /tion$/, replacement: 't', type: '名词形式' as DeformationType },  // collection -> collect
-    { pattern: /tion$/, replacement: '', type: '名词形式' as DeformationType },  // exhaustion -> exhaust (特殊)
-    { pattern: /sion$/, replacement: 'de', type: '名词形式' as DeformationType },  // decision -> decide
-    { pattern: /sion$/, replacement: 'd', type: '名词形式' as DeformationType },  // expansion -> expand
-    { pattern: /sion$/, replacement: '', type: '名词形式' as DeformationType },  // tension -> tens
-    { pattern: /ment$/, replacement: '', type: '名词形式' as DeformationType },  // movement -> move
-    { pattern: /ment$/, replacement: 'e', type: '名词形式' as DeformationType },  // management -> manage
-    { pattern: /ness$/, replacement: '', type: '名词形式' as DeformationType },  // darkness -> dark
-    { pattern: /ness$/, replacement: 'y', type: '名词形式' as DeformationType },  // happiness -> happy
-    { pattern: /ity$/, replacement: 'e', type: '名词形式' as DeformationType },  // activity -> active
-    { pattern: /ity$/, replacement: '', type: '名词形式' as DeformationType },  // curiosity -> curious
-    { pattern: /ance$/, replacement: '', type: '名词形式' as DeformationType },  // resistance -> resist
-    { pattern: /ance$/, replacement: 'e', type: '名词形式' as DeformationType },  // acceptance -> accept
-    { pattern: /ence$/, replacement: '', type: '名词形式' as DeformationType },  // existence -> exist
-    { pattern: /ence$/, replacement: 'e', type: '名词形式' as DeformationType },  // confidence -> confide
-    { pattern: /ure$/, replacement: '', type: '名词形式' as DeformationType },  // failure -> fail
-    { pattern: /ure$/, replacement: 'e', type: '名词形式' as DeformationType },  // pressure -> presse
-    { pattern: /al$/, replacement: '', type: '名词形式' as DeformationType },  // arrival -> arriv
-    { pattern: /al$/, replacement: 'e', type: '名词形式' as DeformationType },  // removal -> remove
-
-    // 动词后缀变形 (名词/形容词 -> 动词)
-    { pattern: /ize$/, replacement: '', type: '动词形式' as DeformationType },  // organize -> organ
-    { pattern: /ize$/, replacement: 'y', type: '动词形式' as DeformationType },  // categorize -> category
-    { pattern: /ify$/, replacement: '', type: '动词形式' as DeformationType },  // simplify -> simpl
-    { pattern: /ify$/, replacement: 'y', type: '动词形式' as DeformationType },  // classify -> class
-    { pattern: /fy$/, replacement: '', type: '动词形式' as DeformationType },  // satisfy -> satisf
-
-    // 形容词后缀变形 (名词 -> 形容词)
-    { pattern: /ful$/, replacement: '', type: '形容词形式' as DeformationType },  // helpful -> help
-    { pattern: /ful$/, replacement: 'y', type: '形容词形式' as DeformationType },  // beautiful -> beauty
-    { pattern: /less$/, replacement: '', type: '形容词形式' as DeformationType },  // helpless -> help
-    { pattern: /ous$/, replacement: '', type: '形容词形式' as DeformationType },  // dangerous -> danger
-    { pattern: /ous$/, replacement: 'y', type: '形容词形式' as DeformationType },  // curious -> curi
-    { pattern: /ive$/, replacement: '', type: '形容词形式' as DeformationType },  // creative -> creat
-    { pattern: /ive$/, replacement: 'e', type: '形容词形式' as DeformationType },  // passive -> passe
-    { pattern: /able$/, replacement: '', type: '形容词形式' as DeformationType },  // comfortable -> comfort
-    { pattern: /able$/, replacement: 'e', type: '形容词形式' as DeformationType },  // reliable -> relie
-    { pattern: /ible$/, replacement: '', type: '形容词形式' as DeformationType },  // responsible -> respons
-    { pattern: /ical$/, replacement: 'y', type: '形容词形式' as DeformationType },  // historical -> history
-    { pattern: /ical$/, replacement: '', type: '形容词形式' as DeformationType },  // musical -> music
-    { pattern: /al$/, replacement: '', type: '形容词形式' as DeformationType },  // natural -> natur
-    { pattern: /al$/, replacement: 'e', type: '形容词形式' as DeformationType },  // cultural -> culture
-  ]
-
-  for (const rule of rules) {
+  for (const rule of LEMMA_RULES) {
     if (rule.pattern.test(lower)) {
       const lemma = lower.replace(rule.pattern, rule.replacement)
       if (lemma !== lower && lemma.length >= 2) {
@@ -388,10 +313,85 @@ export function getLemmas(word: string): string[] {
   return [...new Set(lemmas)]
 }
 
+const LEMMA_RULES: Array<{ pattern: RegExp; replacement: string; type: DeformationType }> = [
+    // 动词变形
+    { pattern: /ied$/, replacement: 'y', type: '过去式' },  // studied -> study
+    { pattern: /([^aeiou])ies$/, replacement: '$1y', type: '复数' },  // cities -> city
+    { pattern: /(?:sh|ch|ss|x|z|o)es$/, replacement: '', type: '复数' },  // boxes -> box
+    { pattern: /ves$/, replacement: 'f', type: '复数' },  // leaves -> leaf
+    { pattern: /ves$/, replacement: 'fe', type: '复数' },  // knives -> knife
+    { pattern: /([^s])es$/, replacement: '$1', type: '复数' },  // horses -> horse
+    { pattern: /([^aeiouy][aeiouy])([^aeiouy])ed$/, replacement: '$1$2', type: '过去式' },  // stopped -> stop
+    { pattern: /([^e])ed$/, replacement: '$1e', type: '过去式' },  // hoped -> hope
+    { pattern: /ed$/, replacement: '', type: '过去式' },  // walked -> walk
+    { pattern: /([^aeiouy][aeiouy])([^aeiouy])ing$/, replacement: '$1$2', type: '进行时' },  // running -> run
+    { pattern: /([^e])ing$/, replacement: '$1e', type: '进行时' },  // hoping -> hope
+    { pattern: /ing$/, replacement: '', type: '进行时' },  // walking -> walk
+    { pattern: /([^aeiouy][aeiouy])([^aeiouy])er$/, replacement: '$1$2', type: '比较级' },  // bigger -> big
+    { pattern: /([^e])er$/, replacement: '$1e', type: '比较级' },  // nicer -> nice
+    { pattern: /er$/, replacement: '', type: '比较级' },  // taller -> tall
+    { pattern: /([^aeiouy][aeiouy])([^aeiouy])est$/, replacement: '$1$2', type: '最高级' },  // biggest -> big
+    { pattern: /([^e])est$/, replacement: '$1e', type: '最高级' },  // nicest -> nice
+    { pattern: /est$/, replacement: '', type: '最高级' },  // tallest -> tall
+    { pattern: /([^aeiouy][aeiouy])([^aeiouy])ly$/, replacement: '$1$2', type: '副词' },  // happily -> happy
+    { pattern: /([^l])ly$/, replacement: '$1', type: '副词' },  // slowly -> slow
+    { pattern: /([^aeiouy])ily$/, replacement: 'y', type: '副词' },  // happily -> happy
+    { pattern: /ally$/, replacement: '', type: '副词' },  // basically -> basic
+    { pattern: /ly$/, replacement: '', type: '副词' },  // simply -> simple
+    { pattern: /([^s])s$/, replacement: '$1', type: '第三人称单数' },  // walks -> walk
+
+    // 名词后缀变形 (动词/形容词 -> 名词)
+    { pattern: /ation$/, replacement: 'e', type: '名词形式' },  // creation -> create
+    { pattern: /ation$/, replacement: '', type: '名词形式' },  // relaxation -> relax
+    { pattern: /tion$/, replacement: 'te', type: '名词形式' },  // exhaustion -> exhauste (不常见)
+    { pattern: /tion$/, replacement: 't', type: '名词形式' },  // collection -> collect
+    { pattern: /tion$/, replacement: '', type: '名词形式' },  // exhaustion -> exhaust (特殊)
+    { pattern: /sion$/, replacement: 'de', type: '名词形式' },  // decision -> decide
+    { pattern: /sion$/, replacement: 'd', type: '名词形式' },  // expansion -> expand
+    { pattern: /sion$/, replacement: '', type: '名词形式' },  // tension -> tens
+    { pattern: /ment$/, replacement: '', type: '名词形式' },  // movement -> move
+    { pattern: /ment$/, replacement: 'e', type: '名词形式' },  // management -> manage
+    { pattern: /ness$/, replacement: '', type: '名词形式' },  // darkness -> dark
+    { pattern: /ness$/, replacement: 'y', type: '名词形式' },  // happiness -> happy
+    { pattern: /ity$/, replacement: 'e', type: '名词形式' },  // activity -> active
+    { pattern: /ity$/, replacement: '', type: '名词形式' },  // curiosity -> curious
+    { pattern: /ance$/, replacement: '', type: '名词形式' },  // resistance -> resist
+    { pattern: /ance$/, replacement: 'e', type: '名词形式' },  // acceptance -> accept
+    { pattern: /ence$/, replacement: '', type: '名词形式' },  // existence -> exist
+    { pattern: /ence$/, replacement: 'e', type: '名词形式' },  // confidence -> confide
+    { pattern: /ure$/, replacement: '', type: '名词形式' },  // failure -> fail
+    { pattern: /ure$/, replacement: 'e', type: '名词形式' },  // pressure -> presse
+    { pattern: /al$/, replacement: '', type: '名词形式' },  // arrival -> arriv
+    { pattern: /al$/, replacement: 'e', type: '名词形式' },  // removal -> remove
+
+    // 动词后缀变形 (名词/形容词 -> 动词)
+    { pattern: /ize$/, replacement: '', type: '动词形式' },  // organize -> organ
+    { pattern: /ize$/, replacement: 'y', type: '动词形式' },  // categorize -> category
+    { pattern: /ify$/, replacement: '', type: '动词形式' },  // simplify -> simpl
+    { pattern: /ify$/, replacement: 'y', type: '动词形式' },  // classify -> class
+    { pattern: /fy$/, replacement: '', type: '动词形式' },  // satisfy -> satisf
+
+    // 形容词后缀变形 (名词 -> 形容词)
+    { pattern: /ful$/, replacement: '', type: '形容词形式' },  // helpful -> help
+    { pattern: /ful$/, replacement: 'y', type: '形容词形式' },  // beautiful -> beauty
+    { pattern: /less$/, replacement: '', type: '形容词形式' },  // helpless -> help
+    { pattern: /ous$/, replacement: '', type: '形容词形式' },  // dangerous -> danger
+    { pattern: /ous$/, replacement: 'y', type: '形容词形式' },  // curious -> curi
+    { pattern: /ive$/, replacement: '', type: '形容词形式' },  // creative -> creat
+    { pattern: /ive$/, replacement: 'e', type: '形容词形式' },  // passive -> passe
+    { pattern: /able$/, replacement: '', type: '形容词形式' },  // comfortable -> comfort
+    { pattern: /able$/, replacement: 'e', type: '形容词形式' },  // reliable -> relie
+    { pattern: /ible$/, replacement: '', type: '形容词形式' },  // responsible -> respons
+    { pattern: /ical$/, replacement: 'y', type: '形容词形式' },  // historical -> history
+    { pattern: /ical$/, replacement: '', type: '形容词形式' },  // musical -> music
+    { pattern: /al$/, replacement: '', type: '形容词形式' },  // natural -> natur
+    { pattern: /al$/, replacement: 'e', type: '形容词形式' },  // cultural -> culture
+]
+
 /**
  * 判断变形类型
  */
-function getDeformationType(original: string, deformed: string): DeformationType {
+export function getDeformationType(original: string, deformed: string): DeformationType {
   const orig = original.toLowerCase()
   const def = deformed.toLowerCase()
 
@@ -566,11 +566,4 @@ export function findDeformationsBatch(
   }
 
   return result
-}
-
-export default {
-  findDeformations,
-  isDeformationOf,
-  findDeformationsBatch,
-  extractWordsFromContent
 }

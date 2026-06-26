@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { speakWord } from '@/lib/constants'
 
 interface WordData {
   word: string
@@ -57,17 +58,6 @@ function cleanDefinition(raw: string): string {
   return s
 }
 
-function speakWord(word: string) {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel()
-    const utterance = new SpeechSynthesisUtterance(word)
-    utterance.lang = 'en-US'
-    utterance.rate = 0.9
-    utterance.pitch = 1
-    window.speechSynthesis.speak(utterance)
-  }
-}
-
 export default function WordPopup({ word, position, lookupWord, originalWord, deformedWord, deformationType, onClose }: WordPopupProps) {
   const [data, setData] = useState<WordData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -75,13 +65,15 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
   const [isFavorite, setIsFavorite] = useState(false)
   const [favoriteLoading, setFavoriteLoading] = useState(false)
 
-  const checkFavorite = async (w: string) => {
+  const checkFavorite = async (w: string, signal?: AbortSignal) => {
     try {
-      const response = await fetch(`/api/favorites`)
+      const response = await fetch(`/api/favorites`, { signal })
+      if (!response.ok) return
       const result = await response.json()
       const exists = result.favorites?.some((f: { word: string }) => f.word === w.toLowerCase())
       setIsFavorite(exists || false)
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return
       setIsFavorite(false)
     }
   }
@@ -117,12 +109,16 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
   }
 
   useEffect(() => {
+    const controller = new AbortController()
+
     const fetchWord = async () => {
       const queryWord = lookupWord || word
       setLoading(true)
       setError(null)
       try {
-        const response = await fetch(`/api/translate?word=${encodeURIComponent(queryWord)}`)
+        const response = await fetch(`/api/translate?word=${encodeURIComponent(queryWord)}`, {
+          signal: controller.signal,
+        })
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}))
@@ -138,17 +134,22 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
         setData(result)
         speakWord(word)
 
-        checkFavorite(queryWord)
+        checkFavorite(queryWord, controller.signal)
       } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') return
         console.error('Failed to fetch word:', err)
         setError(err instanceof Error ? err.message : '翻译失败')
         setData(null)
       } finally {
-        setLoading(false)
+        if (!controller.signal.aborted) {
+          setLoading(false)
+        }
       }
     }
 
     fetchWord()
+
+    return () => { controller.abort() }
   }, [word, lookupWord])
 
   // 计算位置，防止溢出屏幕
@@ -221,10 +222,10 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </button>
-              {data.phonetic && (
-                <span className="text-slate-500">{data.phonetic}</span>
-              )}
             </div>
+            {data.phonetic && (
+              <div className="text-slate-500">{data.phonetic}</div>
+            )}
 
             {data.chinese && (
               <div className="text-slate-400 font-medium">{cleanChinese(data.chinese)}</div>

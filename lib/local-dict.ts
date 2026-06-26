@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { getLemmas } from './lemmatizer'
 
 interface LocalDictEntry {
   word: string
@@ -134,118 +135,27 @@ export function lookupLocalDict(word: string): LocalDictEntry | null {
   }
 
   // 尝试词形还原查找
-  const lemma = getLemma(normalizedWord)
-  if (lemma && lemma !== normalizedWord) {
-    const lemmaEntry = dictData[lemma]
-    if (lemmaEntry) {
-      const result: LocalDictEntry = {
-        word: normalizedWord,
-        phonetic: lemmaEntry.p || null,
-        definition: lemmaEntry.d || null,
-        chinese: lemmaEntry.t || null,
-        exchange: lemmaEntry.e || null
+  const lemmas = getLemmas(normalizedWord)
+  for (const lemma of lemmas) {
+    if (lemma !== normalizedWord) {
+      const lemmaEntry = dictData[lemma]
+      if (lemmaEntry) {
+        const result: LocalDictEntry = {
+          word: normalizedWord,
+          phonetic: lemmaEntry.p || null,
+          definition: lemmaEntry.d || null,
+          chinese: lemmaEntry.t || null,
+          exchange: lemmaEntry.e || null
+        }
+
+        queryCache.set(normalizedWord, result)
+        return result
       }
-      
-      queryCache.set(normalizedWord, result)
-      return result
     }
   }
 
   queryCache.set(normalizedWord, null)
   return null
-}
-
-/**
- * 简单词形还原（将变形还原为原形）
- */
-function getLemma(word: string): string | null {
-  // 动词过去式/过去分词
-  if (word.endsWith('ied')) {
-    return word.slice(0, -3) + 'y'
-  }
-  if (word.endsWith('ed')) {
-    const base = word.slice(0, -2)
-    // stopped -> stop (双写)
-    if (base.length >= 3 && isConsonant(base[base.length - 1]) && isVowel(base[base.length - 2]) && isConsonant(base[base.length - 3])) {
-      return base.slice(0, -1)
-    }
-    // hoped -> hope
-    if (base.endsWith('e')) {
-      return base
-    }
-    return base
-  }
-  
-  // 进行时
-  if (word.endsWith('ing')) {
-    const base = word.slice(0, -3)
-    if (base.length >= 3 && isConsonant(base[base.length - 1]) && isVowel(base[base.length - 2]) && isConsonant(base[base.length - 3])) {
-      return base.slice(0, -1)
-    }
-    return base + 'e'
-  }
-  
-  // 第三人称单数
-  if (word.endsWith('ies')) {
-    return word.slice(0, -3) + 'y'
-  }
-  if (word.endsWith('es')) {
-    return word.slice(0, -2)
-  }
-  if (word.endsWith('s') && !word.endsWith('ss')) {
-    return word.slice(0, -1)
-  }
-  
-  // 比较级/最高级
-  if (word.endsWith('er')) {
-    return word.slice(0, -2)
-  }
-  if (word.endsWith('est')) {
-    return word.slice(0, -3)
-  }
-  
-  // 副词
-  if (word.endsWith('ly')) {
-    return word.slice(0, -2)
-  }
-  
-  // 名词形式
-  if (word.endsWith('tion')) {
-    return word.slice(0, -4) + 'te'
-  }
-  if (word.endsWith('ment')) {
-    return word.slice(0, -4)
-  }
-  if (word.endsWith('ness')) {
-    return word.slice(0, -4)
-  }
-  
-  // 形容词形式
-  if (word.endsWith('ful')) {
-    return word.slice(0, -3)
-  }
-  if (word.endsWith('less')) {
-    return word.slice(0, -4)
-  }
-  if (word.endsWith('ous')) {
-    return word.slice(0, -3)
-  }
-  if (word.endsWith('ive')) {
-    return word.slice(0, -3) + 'e'
-  }
-  if (word.endsWith('able')) {
-    return word.slice(0, -4)
-  }
-  
-  return null
-}
-
-function isVowel(char: string): boolean {
-  return 'aeiou'.includes(char)
-}
-
-function isConsonant(char: string): boolean {
-  return /[bcdfghjklmnpqrstvwxyz]/.test(char)
 }
 
 /**

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { generateArticle, translateArticleToChinese } from '@/lib/deepseek'
+import { generateArticle, translateArticleToChinese, translateToChinese } from '@/lib/deepseek'
 import { lookupWord } from '@/lib/dictionary'
-import { translateToChinese } from '@/lib/deepseek'
+import { STYLE_LABELS } from '@/lib/constants'
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,9 +15,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (words.length > 50) {
+      return NextResponse.json(
+        { error: 'Too many words (max 50)' },
+        { status: 400 }
+      )
+    }
+
     const content = await generateArticle(words, difficulty, style)
     const translation = await translateArticleToChinese(content)
-    const STYLE_LABELS: Record<string, string> = { story: '故事', news: '新闻', science: '科普', dialogue: '对话' }
     const title = `${difficulty.toUpperCase()} · ${STYLE_LABELS[style] || '阅读'} - ${new Date().toLocaleDateString('zh-CN')}`
 
     // 获取每个单词的词典信息

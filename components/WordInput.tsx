@@ -20,9 +20,9 @@ export default function WordInput({ onSubmit, loading, initialText = '' }: WordI
   const [difficulty, setDifficulty] = useState('cet4')
   const [style, setStyle] = useState('story')
 
-  // 当initialText变化时，更新文本框内容
+  // 仅在文本框为空时，用 initialText 填充（避免覆盖用户已输入的内容）
   useEffect(() => {
-    if (initialText) {
+    if (initialText && !text) {
       setText(initialText)
     }
   }, [initialText])

@@ -87,14 +87,45 @@ export async function lookupWord(word: string): Promise<DictionaryEntry | null> 
   const localResult = lookupLocalDict(word)
 
   if (localResult && (localResult.chinese || localResult.definition)) {
+    const definition = pickBestDefinition(localResult.definition, localResult.chinese)
     return {
       word: localResult.word,
       phonetic: localResult.phonetic,
-      definition: localResult.definition || localResult.chinese || '',
+      definition: definition || localResult.definition || '',
       example: null,
     }
   }
 
   // 2. 本地没有，调用远程API（兜底）
   return lookupWordFromAPI(word)
+}
+
+/**
+ * 根据中文释义的词性前缀，从英文定义中选择最匹配的一条
+ * ECDICT 的 definition 字段可能包含多条定义，以词性前缀分隔，如：
+ *   "n. xxx a. yyy s. zzz"
+ * 中文翻译通常也有词性前缀，如 "a. 中级的, 次要的"
+ */
+function pickBestDefinition(definition: string | null, chinese: string | null): string {
+  if (!definition) return ''
+
+  // 按词性前缀拆分英文定义
+  const defParts = definition.split(/\s+(?=(?:vt\.|vi\.|n\.|a\.|ad\.|prep\.|conj\.|pron\.|int\.|art\.|num\.|aux\.|abbr\.|v\.|r\.|s\.))/).map(s => s.trim()).filter(Boolean)
+
+  // 只有一条定义，直接返回
+  if (defParts.length <= 1) return definition
+
+  // 从中文释义中提取词性前缀
+  if (chinese) {
+    const posMatch = chinese.match(/^(vt\.|vi\.|n\.|a\.|ad\.|prep\.|conj\.|pron\.|int\.|art\.|num\.|aux\.|abbr\.|v\.|r\.|s\.)/)
+    if (posMatch) {
+      const pos = posMatch[1].toLowerCase()
+      // 查找匹配词性的英文定义
+      const matched = defParts.find(d => d.toLowerCase().startsWith(pos))
+      if (matched) return matched
+    }
+  }
+
+  // 没有匹配到，返回第一条
+  return defParts[0]
 }

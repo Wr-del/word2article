@@ -15,32 +15,53 @@ interface DeepSeekResponse {
   }>
 }
 
+const MAX_RETRIES = 2
+const RETRY_DELAY_MS = 1000
+
 export async function callDeepSeek(messages: DeepSeekMessage[]): Promise<string> {
   const apiKey = process.env.DEEPSEEK_API_KEY
   if (!apiKey) {
     throw new Error('DEEPSEEK_API_KEY is not configured')
   }
 
-  const response = await fetch(DEEPSEEK_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'deepseek-chat',
-      messages,
-      temperature: 0.5, // 降低温度，让 AI 更注重逻辑结构，减少胡思乱想
-      max_tokens: 2000,
-    }),
-  })
+  let lastError: Error | null = null
 
-  if (!response.ok) {
-    throw new Error(`DeepSeek API error: ${response.status}`)
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    if (attempt > 0) {
+      await new Promise(r => setTimeout(r, RETRY_DELAY_MS * attempt))
+    }
+
+    const response = await fetch(DEEPSEEK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages,
+        temperature: 0.5,
+        max_tokens: 2000,
+      }),
+    })
+
+    if (!response.ok) {
+      const retriable = response.status === 429 || response.status === 502 || response.status === 503
+      lastError = new Error(`DeepSeek API error: ${response.status}`)
+      if (retriable && attempt < MAX_RETRIES) continue
+      throw lastError
+    }
+
+    const data = await response.json() as DeepSeekResponse
+
+    if (!data.choices?.[0]?.message?.content) {
+      throw new Error('DeepSeek API returned empty response')
+    }
+
+    return data.choices[0].message.content
   }
 
-  const data: DeepSeekResponse = await response.json()
-  return data.choices[0].message.content
+  throw lastError ?? new Error('DeepSeek API call failed')
 }
 
 const STYLE_PROMPTS: Record<string, string> = {
