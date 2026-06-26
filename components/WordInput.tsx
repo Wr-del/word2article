@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useToast } from '@/components/Toast'
 
 interface WordInputProps {
   onSubmit: (words: string[], difficulty: string, style: string) => void
@@ -16,6 +17,7 @@ const STYLES = [
 ]
 
 export default function WordInput({ onSubmit, loading, initialText = '' }: WordInputProps) {
+  const toast = useToast()
   const [text, setText] = useState('')
   const [difficulty, setDifficulty] = useState('cet4')
   const [style, setStyle] = useState('story')
@@ -45,11 +47,11 @@ export default function WordInput({ onSubmit, loading, initialText = '' }: WordI
       if (data.words && data.words.length > 0) {
         onSubmit(data.words, difficulty, style)
       } else {
-        alert('未能识别出有效单词，请检查输入格式')
+        toast('未能识别出有效单词，请检查输入格式')
       }
     } catch (error) {
       console.error('Extract error:', error)
-      alert('提取单词失败，请重试')
+      toast('提取单词失败，请重试')
     }
   }
 

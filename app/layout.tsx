@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
+import Providers from '@/components/Providers'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className={`${inter.className} bg-[#03060c] text-slate-200 min-h-screen flex flex-col antialiased selection:bg-brand-500/20 selection:text-brand-500 relative overflow-x-hidden`}>
+      <Providers>
 
         {/* 微米级哑光噪点材质层 */}
         <svg className="fixed inset-0 w-full h-full -z-20 pointer-events-none opacity-[0.015]" xmlns="http://www.w3.org/2000/svg">
@@ -85,6 +87,7 @@ export default function RootLayout({
             document.addEventListener('DOMContentLoaded', initSpotlightEngine);
           `
         }} />
+      </Providers>
       </body>
     </html>
   )

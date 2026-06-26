@@ -4,9 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import WordInput from '@/components/WordInput'
 import PdfImport from '@/components/PdfImport'
+import { useToast } from '@/components/Toast'
 
 export default function Home() {
   const router = useRouter()
+  const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [showPdfImport, setShowPdfImport] = useState(false)
   const [importedText, setImportedText] = useState('')
@@ -20,13 +22,19 @@ export default function Home() {
         body: JSON.stringify({ words, difficulty, style }),
       })
 
+      if (!response.ok) {
+        toast('生成文章失败，请重试')
+        return
+      }
       const data = await response.json()
       if (data.article) {
         router.push(`/article/${data.article.id}`)
+      } else {
+        toast('生成文章失败，请重试')
       }
     } catch (error) {
       console.error('Generate error:', error)
-      alert('生成文章失败，请重试')
+      toast('生成文章失败，请重试')
     } finally {
       setLoading(false)
     }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { STYLE_LABELS } from '@/lib/constants'
+import { useToast } from '@/components/Toast'
 
 interface ArticleSummary {
   id: number
@@ -14,6 +15,7 @@ interface ArticleSummary {
 }
 
 export default function HistoryPage() {
+  const toast = useToast()
   const [articles, setArticles] = useState<ArticleSummary[]>([])
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<number | null>(null)
@@ -52,11 +54,11 @@ export default function HistoryPage() {
       if (response.ok) {
         setArticles(articles.filter(a => a.id !== id))
       } else {
-        alert('删除失败，请重试')
+        toast('删除失败，请重试')
       }
     } catch (error) {
       console.error('Delete article error:', error)
-      alert('删除失败，请重试')
+      toast('删除失败，请重试')
     } finally {
       setDeletingId(null)
     }

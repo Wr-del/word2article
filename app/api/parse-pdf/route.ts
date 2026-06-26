@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import PDFParser from 'pdf2json'
 
+interface PdfTextRun { T: string }
+interface PdfTextObj { x: number; y: number; R: PdfTextRun[] }
+interface PdfPage { Texts: PdfTextObj[] }
+interface PdfData { Pages: PdfPage[] }
+
 // 噪音词过滤列表
 const NOISE_WORDS = new Set([
   'word', 'meaning', 'phonetic', 'example', 'translation',
@@ -54,15 +59,17 @@ export async function POST(req: NextRequest) {
     const lines = await new Promise<string[]>((resolve, reject) => {
       const pdfParser = new PDFParser()
 
-      pdfParser.on('pdfParser_dataError', (errData: any) => reject(errData.parserError))
+      pdfParser.on('pdfParser_dataError', (errData: Error | { parserError: Error }) =>
+        reject('parserError' in errData ? errData.parserError : errData)
+      )
 
-      pdfParser.on('pdfParser_dataReady', (pdfData: any) => {
+      pdfParser.on('pdfParser_dataReady', (pdfData: PdfData) => {
         const result: string[] = []
 
-        pdfData.Pages.forEach((page: any) => {
-          const rows: { [key: number]: any[] } = {}
+        pdfData.Pages.forEach((page: PdfPage) => {
+          const rows: Record<number, PdfTextObj[]> = {}
 
-          page.Texts.forEach((textObj: any) => {
+          page.Texts.forEach((textObj: PdfTextObj) => {
             const y = Math.round(textObj.y * 100)
             if (!rows[y]) rows[y] = []
             rows[y].push(textObj)
@@ -71,9 +78,9 @@ export async function POST(req: NextRequest) {
           const sortedY = Object.keys(rows).sort((a, b) => Number(a) - Number(b))
 
           sortedY.forEach(y => {
-            const rowItems = rows[Number(y)].sort((a: any, b: any) => a.x - b.x)
+            const rowItems = rows[Number(y)].sort((a, b) => a.x - b.x)
             const rowText = rowItems
-              .map((item: any) => decodeURIComponent(item.R[0].T))
+              .map((item) => decodeURIComponent(item.R[0].T))
               .join(' ')
               .trim()
 
@@ -104,8 +111,8 @@ export async function POST(req: NextRequest) {
     const words = [...new Set(allWords)]
     return NextResponse.json({ words })
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('PDF parsing error:', error)
-    return NextResponse.json({ error: error?.message || 'Failed to parse PDF' }, { status: 500 })
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed to parse PDF' }, { status: 500 })
   }
 }

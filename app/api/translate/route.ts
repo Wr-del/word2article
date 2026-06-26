@@ -40,24 +40,19 @@ export async function GET(request: NextRequest) {
       cached?.chinese ? Promise.resolve(cached.chinese) : translateToChinese(normalizedWord),
     ])
 
-    // 尝试更新或创建缓存
+    // 更新或写入缓存
     try {
-      // 查找或创建缓存文章
-      let cacheArticle = await prisma.article.findFirst({
-        where: { title: '__cache__' },
+      const cacheArticle = await prisma.article.upsert({
+        where: { id: -1 },
+        update: {},
+        create: {
+          id: -1,
+          title: '__cache__',
+          content: 'Translation cache',
+          difficulty: 'cet4',
+        },
       })
 
-      if (!cacheArticle) {
-        cacheArticle = await prisma.article.create({
-          data: {
-            title: '__cache__',
-            content: 'This is a cache article for storing word translations.',
-            difficulty: 'cet4',
-          },
-        })
-      }
-
-      // 如果有旧缓存，更新它；否则创建新记录
       if (cached) {
         await prisma.word.update({
           where: { id: cached.id },
