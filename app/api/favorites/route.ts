@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const word = request.nextUrl.searchParams.get('word')
+
+    // 单词检查模式：GET /api/favorites?word=xxx
+    if (word) {
+      const favorite = await prisma.favorite.findUnique({
+        where: { word: word.toLowerCase() },
+        select: { word: true },
+      })
+      return NextResponse.json({ isFavorite: !!favorite })
+    }
+
+    // 全量列表模式：GET /api/favorites
     const favorites = await prisma.favorite.findMany({
       orderBy: { createdAt: 'desc' },
     })

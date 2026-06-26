@@ -67,11 +67,10 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
 
   const checkFavorite = async (w: string, signal?: AbortSignal) => {
     try {
-      const response = await fetch(`/api/favorites`, { signal })
+      const response = await fetch(`/api/favorites?word=${encodeURIComponent(w)}`, { signal })
       if (!response.ok) return
       const result = await response.json()
-      const exists = result.favorites?.some((f: { word: string }) => f.word === w.toLowerCase())
-      setIsFavorite(exists || false)
+      setIsFavorite(result.isFavorite || false)
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return
       setIsFavorite(false)
