@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Link from 'next/link'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -37,24 +38,24 @@ export default function RootLayout({
         {/* 顶部半透明磨砂导航栏 */}
         <header className="bg-[#03060c]/70 border-b border-slate-900/40 sticky top-0 z-40 backdrop-blur-xl">
           <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2.5 cursor-pointer group">
+            <Link href="/" className="flex items-center gap-2.5 cursor-pointer group">
               <div className="p-2 bg-brand-500/10 text-brand-500 rounded-xl shadow-inner border border-brand-500/5 group-hover:bg-brand-500/20 group-hover:scale-105 transition-all duration-300">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <span className="font-bold text-base text-slate-100 tracking-tight transition-colors duration-300 group-hover:text-brand-500">Word2Article</span>
-            </a>
+            </Link>
             <nav className="flex items-center gap-5">
-              <a href="/" className="text-xs font-semibold text-brand-500 transition-colors">
+              <Link href="/" className="text-xs font-semibold text-brand-500 transition-colors">
                 首页
-              </a>
-              <a href="/favorites" className="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5">
+              </Link>
+              <Link href="/favorites" className="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5">
                 生词本
-              </a>
-              <a href="/history" className="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5">
+              </Link>
+              <Link href="/history" className="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5">
                 历史记录
-              </a>
+              </Link>
             </nav>
           </div>
         </header>

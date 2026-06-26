@@ -136,6 +136,27 @@
   transform: translateY(-1px);
 }
 
+/* 遮罩模式：目标单词遮罩样式 */
+.mask-word {
+  position: relative;
+  padding: 1px 2px;
+  border-radius: 3px;
+  border-bottom: 1.5px dotted rgba(16, 185, 129, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mask-word-reveal {
+  color: rgba(16, 185, 129, 0.5);
+}
+.mask-word-hidden {
+  color: transparent;
+  user-select: none;
+  border-bottom: 1px dotted rgba(16, 185, 129, 0.15);
+}
+.mask-word:hover {
+  background: rgba(16, 185, 129, 0.06);
+  border-bottom-color: rgba(16, 185, 129, 0.35);
+}
+
 /* 变形单词高亮样式 */
 .deformation-highlight {
   position: relative;

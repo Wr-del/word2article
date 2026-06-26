@@ -2,10 +2,10 @@
 
 import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'next/navigation'
+import Link from 'next/link'
 import ArticleView from '@/components/ArticleView'
 import { findDeformations, Deformation } from '@/lib/lemmatizer'
-
-const STYLE_LABELS: Record<string, string> = { story: '故事', news: '新闻', science: '科普', dialogue: '对话' }
+import { STYLE_LABELS } from '@/lib/constants'
 
 interface ArticleData {
   id: number
@@ -27,15 +27,19 @@ export default function ArticlePage() {
   const [article, setArticle] = useState<ArticleData | null>(null)
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
+  const [maskMode, setMaskMode] = useState(false)
 
-  // 使用词形还原工具自动计算变形
+  const mainContent = useMemo(() => {
+    if (!article?.content) return ''
+    return article.content.split('【单词变形】')[0].trim()
+  }, [article])
+
   const deformations = useMemo<Deformation[]>(() => {
-    if (!article?.content || !article?.words?.length) return []
+    if (!mainContent || !article?.words?.length) return []
 
     const wordList = article.words.map(w => w.word)
     const definitions: Record<string, string> = {}
 
-    // 构建释义映射
     article.words.forEach(w => {
       if (w.chinese) {
         definitions[w.word] = w.chinese
@@ -44,11 +48,8 @@ export default function ArticlePage() {
       }
     })
 
-    // 移除可能残留的变形标记部分（如果有）
-    const mainContent = article.content.split('【单词变形】')[0].trim()
-
     return findDeformations(wordList, mainContent, definitions)
-  }, [article])
+  }, [mainContent, article])
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -68,9 +69,6 @@ export default function ArticlePage() {
 
   const handleCopy = async () => {
     if (!article) return
-
-    // 移除可能残留的变形标记部分
-    const mainContent = article.content.split('【单词变形】')[0].trim()
 
     let copyText = `📚 ${article.title}\n\n`
     copyText += `【英文原文】\n${mainContent}\n\n`
@@ -126,18 +124,15 @@ export default function ArticlePage() {
 
   const wordList = article.words.map(w => w.word)
 
-  // 移除可能残留的变形标记部分
-  const mainContent = article.content.split('【单词变形】')[0].trim()
-
   return (
     <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
       <div className="mb-6">
-        <a href="/" className="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1">
+        <Link href="/" className="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1">
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           返回首页
-        </a>
+        </Link>
       </div>
 
       {/* 沉浸式文章阅读面板 */}
@@ -150,6 +145,24 @@ export default function ArticlePage() {
             <span className="text-xs font-semibold text-slate-400 tracking-wide">沉浸式阅读语境</span>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setMaskMode(!maskMode)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold border rounded-lg transition-all duration-200 ${
+                maskMode
+                  ? 'text-brand-500 bg-brand-500/10 border-brand-500/40 hover:bg-brand-500/20'
+                  : 'text-slate-400 hover:text-brand-500 bg-slate-900/50 hover:bg-slate-900 border-slate-800 hover:border-brand-500/30'
+              }`}
+              title={maskMode ? '关闭遮罩' : '开启遮罩'}
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {maskMode ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                )}
+              </svg>
+              {maskMode ? '遮罩中' : '遮罩'}
+            </button>
             <button
               onClick={handleCopy}
               className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-slate-400 hover:text-brand-500 bg-slate-900/50 hover:bg-slate-900 border border-slate-800 hover:border-brand-500/30 rounded-lg transition-all duration-200"
@@ -184,7 +197,7 @@ export default function ArticlePage() {
         <div className="p-6 md:p-8 space-y-6">
           {/* 英文原文 */}
           <div className="text-slate-300 leading-relaxed font-serif text-[16.5px] md:text-[17.5px] tracking-wide space-y-4">
-            <ArticleView content={mainContent} words={wordList} />
+            <ArticleView content={mainContent} words={wordList} maskMode={maskMode} />
           </div>
 
           {/* 单词变形 */}
@@ -231,15 +244,15 @@ export default function ArticlePage() {
       </div>
 
       <div className="mt-6 text-center space-x-4">
-        <a href={`/quiz/${params.id}`} className="text-[10px] text-emerald-500 hover:text-emerald-600 font-bold transition-colors">
+        <Link href={`/quiz/${params.id}`} className="text-[10px] text-emerald-500 hover:text-emerald-600 font-bold transition-colors">
           开始测试
-        </a>
-        <a href="/" className="text-[10px] text-brand-500 hover:text-brand-600 font-bold transition-colors">
+        </Link>
+        <Link href="/" className="text-[10px] text-brand-500 hover:text-brand-600 font-bold transition-colors">
           生成新文章
-        </a>
-        <a href="/history" className="text-[10px] text-slate-500 hover:text-slate-300 font-medium transition-colors">
+        </Link>
+        <Link href="/history" className="text-[10px] text-slate-500 hover:text-slate-300 font-medium transition-colors">
           历史记录
-        </a>
+        </Link>
       </div>
     </main>
   )

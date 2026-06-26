@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-
-const STYLE_LABELS: Record<string, string> = { story: '故事', news: '新闻', science: '科普', dialogue: '对话' }
+import Link from 'next/link'
+import { STYLE_LABELS } from '@/lib/constants'
 
 interface ArticleSummary {
   id: number
@@ -85,7 +85,7 @@ export default function HistoryPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <p className="text-xs mb-4">暂无历史记录</p>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-brand-500 hover:text-brand-400 bg-brand-500/10 hover:bg-brand-500/20 rounded-lg transition-all duration-200"
           >
@@ -93,12 +93,12 @@ export default function HistoryPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             去生成文章
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="space-y-4">
           {articles.map((article, idx) => (
-            <a
+            <Link
               key={article.id}
               href={`/article/${article.id}`}
               className="block glass-card p-4 rounded-xl custom-shadow space-y-3 relative group hover:border-slate-800 transition-all duration-300 cursor-pointer"
@@ -136,7 +136,7 @@ export default function HistoryPage() {
               </div>
               <div className="text-xs text-slate-400 font-medium">{article.title}</div>
               <div className="text-[10px] text-slate-600">{article.wordCount} 个单词</div>
-            </a>
+            </Link>
           ))}
         </div>
       )}

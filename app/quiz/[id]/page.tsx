@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import Link from 'next/link'
 
 interface QuizQuestion {
   id: number
@@ -85,7 +86,7 @@ export default function QuizPage() {
       <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="text-slate-400">暂无测试题目</div>
-          <a href="/" className="text-xs text-brand-500 hover:text-brand-600">返回首页</a>
+           <Link href="/" className="text-xs text-brand-500 hover:text-brand-600">返回首页</Link>
         </div>
       </main>
     )
@@ -110,12 +111,12 @@ export default function QuizPage() {
             >
               再测一次
             </button>
-            <a
+            <Link
               href={`/article/${params.id}`}
               className="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition-all"
             >
               返回文章
-            </a>
+            </Link>
           </div>
         </div>
       </main>
@@ -130,12 +131,12 @@ export default function QuizPage() {
   return (
     <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
       <div className="flex items-center justify-between">
-        <a href={`/article/${params.id}`} className="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1">
+        <Link href={`/article/${params.id}`} className="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1">
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           返回文章
-        </a>
+        </Link>
         <div className="text-xs text-slate-500">
           {currentIndex + 1} / {questions.length}
         </div>

@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { speakWord } from '@/lib/constants'
 
 interface FavoriteWord {
   id: number
@@ -44,16 +46,6 @@ export default function FavoritesPage() {
     }
   }
 
-  const speakWord = (word: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel()
-      const utterance = new SpeechSynthesisUtterance(word)
-      utterance.lang = 'en-US'
-      utterance.rate = 0.9
-      window.speechSynthesis.speak(utterance)
-    }
-  }
-
   if (loading) {
     return (
       <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 flex items-center justify-center">
@@ -77,7 +69,7 @@ export default function FavoritesPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
           <p className="text-xs mb-4">暂无收藏单词</p>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-brand-500 hover:text-brand-400 bg-brand-500/10 hover:bg-brand-500/20 rounded-lg transition-all duration-200"
           >
@@ -85,7 +77,7 @@ export default function FavoritesPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             去生成文章
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="space-y-3">

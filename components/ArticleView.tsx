@@ -2,27 +2,15 @@
 
 import { useState, useCallback } from 'react'
 import WordPopup from './WordPopup'
-import { getLemmas } from '@/lib/lemmatizer'
+import { getLemmas, getDeformationType } from '@/lib/lemmatizer'
 
 interface ArticleViewProps {
   content: string
   words: string[]
+  maskMode?: boolean
 }
 
-function guessDeformationType(deformed: string): string {
-  const w = deformed.toLowerCase()
-  if (/[^aeiou]ied$/.test(w) || /ed$/.test(w)) return '过去式/过去分词'
-  if (/ing$/.test(w)) return '进行时'
-  if (/([^aeiouy][aeiouy])([^aeiouy])er$/.test(w) || /([^e])er$/.test(w) || /er$/.test(w)) return '比较级'
-  if (/([^aeiouy][aeiouy])([^aeiouy])est$/.test(w) || /([^e])est$/.test(w) || /est$/.test(w)) return '最高级'
-  if (/([^l])ly$/.test(w) || /ally$/.test(w) || /ly$/.test(w)) return '副词'
-  if (/([^aeiou])ies$/.test(w) || /(?:sh|ch|ss|x|z|o)es$/.test(w) || /ves$/.test(w) || /s$/.test(w)) return '复数/第三人称单数'
-  if (/tion$/.test(w) || /sion$/.test(w) || /ment$/.test(w) || /ness$/.test(w) || /ity$/.test(w)) return '名词形式'
-  if (/ful$/.test(w) || /less$/.test(w) || /ous$/.test(w) || /ive$/.test(w) || /able$/.test(w) || /ible$/.test(w)) return '形容词形式'
-  return '变形'
-}
-
-export default function ArticleView({ content, words }: ArticleViewProps) {
+export default function ArticleView({ content, words, maskMode = false }: ArticleViewProps) {
   const [popup, setPopup] = useState<{
     word: string
     position: { x: number; y: number }
@@ -31,6 +19,7 @@ export default function ArticleView({ content, words }: ArticleViewProps) {
     deformedWord?: string
     deformationType?: string
   } | null>(null)
+  const [revealedWords, setRevealedWords] = useState<Set<string>>(new Set())
 
   const handleWordClick = useCallback((word: string, event: React.MouseEvent, extra?: { lookupWord?: string; originalWord?: string; deformedWord?: string; deformationType?: string }) => {
     const rect = (event.target as HTMLElement).getBoundingClientRect()
@@ -42,6 +31,22 @@ export default function ArticleView({ content, words }: ArticleViewProps) {
       },
       ...extra,
     })
+  }, [])
+
+  const handleMaskClick = useCallback((word: string, event: React.MouseEvent) => {
+    event.stopPropagation()
+    setRevealedWords(prev => {
+      const next = new Set(prev)
+      next.add(word.toLowerCase())
+      return next
+    })
+    setTimeout(() => {
+      setRevealedWords(prev => {
+        const next = new Set(prev)
+        next.delete(word.toLowerCase())
+        return next
+      })
+    }, 1500)
   }, [])
 
   const renderContent = () => {
@@ -84,16 +89,31 @@ export default function ArticleView({ content, words }: ArticleViewProps) {
       }
 
       if (isTargetWord) {
-        // 原形高亮
-        parts.push(
-          <span
-            key={match.index}
-            onClick={(e) => handleWordClick(matchedWord, e)}
-            className="premium-highlight cursor-help transition-all duration-150 select-none word-badge"
-          >
-            {matchedWord}
-          </span>
-        )
+        if (maskMode && !revealedWords.has(lowerWord)) {
+          // 遮罩模式：显示首字母 + 下划线
+          parts.push(
+            <span
+              key={match.index}
+              onClick={(e) => handleMaskClick(matchedWord, e)}
+              className="mask-word cursor-pointer select-none word-badge"
+              title="点击揭示"
+            >
+              <span className="mask-word-reveal">{matchedWord[0]}</span>
+              <span className="mask-word-hidden">{matchedWord.slice(1)}</span>
+            </span>
+          )
+        } else {
+          // 原形高亮（非遮罩模式，或已揭示）
+          parts.push(
+            <span
+              key={match.index}
+              onClick={(e) => handleWordClick(matchedWord, e)}
+              className="premium-highlight cursor-help transition-all duration-150 select-none word-badge"
+            >
+              {matchedWord}
+            </span>
+          )
+        }
       } else if (isDeformation) {
         // 变形高亮（不同样式）
         parts.push(
@@ -103,7 +123,7 @@ export default function ArticleView({ content, words }: ArticleViewProps) {
               lookupWord: originalWord,
               originalWord,
               deformedWord: matchedWord,
-              deformationType: guessDeformationType(matchedWord),
+              deformationType: getDeformationType(originalWord, matchedWord),
             })}
             className="deformation-highlight cursor-help transition-all duration-150 select-none word-badge"
             title={`变形: ${originalWord}`}
