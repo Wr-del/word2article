@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+const MAX_TEXT_LENGTH = 50_000
+
 export async function POST(request: NextRequest) {
   try {
     const { text } = await request.json()
@@ -11,7 +13,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const wordRegex = /[a-zA-Z]+/g
+    if (text.length > MAX_TEXT_LENGTH) {
+      return NextResponse.json(
+        { error: `Text too long (max ${MAX_TEXT_LENGTH} characters)` },
+        { status: 400 }
+      )
+    }
+
+    const wordRegex = /[a-zA-Z]+(?:[''-][a-zA-Z]+)*/g
     const matches = text.match(wordRegex) || []
 
     const words = [...new Set(
@@ -21,7 +30,8 @@ export async function POST(request: NextRequest) {
     )]
 
     return NextResponse.json({ words })
-  } catch {
+  } catch (error) {
+    console.error('Extract words error:', error)
     return NextResponse.json(
       { error: 'Failed to extract words' },
       { status: 500 }

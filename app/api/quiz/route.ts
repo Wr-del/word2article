@@ -1,14 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const articleId = searchParams.get('articleId')
 
-    if (!articleId) {
+    if (!articleId || isNaN(Number(articleId))) {
       return NextResponse.json(
-        { error: 'articleId is required' },
+        { error: 'Valid articleId is required' },
         { status: 400 }
       )
     }
@@ -28,15 +37,14 @@ export async function GET(request: NextRequest) {
     const words = article.words.filter(w => w.chinese).slice(0, 10)
     
     const questions = words.map((word, index) => {
-      const otherWords = article.words
-        .filter(w => w.id !== word.id && w.chinese)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3)
-      
-      const options = [
+      const otherWords = shuffle(
+        article.words.filter(w => w.id !== word.id && w.chinese)
+      ).slice(0, 3)
+
+      const options = shuffle([
         { word: word.word, chinese: word.chinese, isCorrect: true },
         ...otherWords.map(w => ({ word: w.word, chinese: w.chinese, isCorrect: false })),
-      ].sort(() => Math.random() - 0.5)
+      ])
 
       return {
         id: index + 1,
