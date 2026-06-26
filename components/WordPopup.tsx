@@ -81,15 +81,15 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
   const toggleFavorite = async () => {
     if (favoriteLoading) return
     setFavoriteLoading(true)
-    
+
     try {
       if (isFavorite) {
-        await fetch(`/api/favorites?word=${encodeURIComponent(word)}`, {
+        const res = await fetch(`/api/favorites?word=${encodeURIComponent(word)}`, {
           method: 'DELETE',
         })
-        setIsFavorite(false)
+        if (res.ok) setIsFavorite(false)
       } else {
-        await fetch('/api/favorites', {
+        const res = await fetch('/api/favorites', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -99,7 +99,7 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
             chinese: data?.chinese,
           }),
         })
-        setIsFavorite(true)
+        if (res.ok) setIsFavorite(true)
       }
     } catch (err) {
       console.error('Toggle favorite error:', err)

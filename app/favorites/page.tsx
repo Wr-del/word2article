@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { speakWord } from '@/lib/constants'
 
@@ -17,9 +17,10 @@ export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<FavoriteWord[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetchFavorites = async () => {
+  const fetchFavorites = useCallback(async () => {
     try {
       const response = await fetch('/api/favorites')
+      if (!response.ok) return
       const data = await response.json()
       setFavorites(data.favorites || [])
     } catch (error) {
@@ -27,11 +28,11 @@ export default function FavoritesPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     fetchFavorites()
-  }, [])
+  }, [fetchFavorites])
 
   const handleRemove = async (word: string) => {
     try {

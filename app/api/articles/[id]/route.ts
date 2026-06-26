@@ -71,22 +71,15 @@ export async function DELETE(
       )
     }
 
-    // 检查文章是否存在
-    const article = await prisma.article.findUnique({
-      where: { id },
-    })
-
-    if (!article) {
-      return NextResponse.json(
-        { error: 'Article not found' },
-        { status: 404 }
-      )
+    // 删除文章（关联的单词会因为 onDelete: Cascade 自动删除）
+    try {
+      await prisma.article.delete({ where: { id } })
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'code' in err && (err as { code: string }).code === 'P2025') {
+        return NextResponse.json({ error: 'Article not found' }, { status: 404 })
+      }
+      throw err
     }
-
-    // 删除文章（关联的单词会因为onDelete: Cascade自动删除）
-    await prisma.article.delete({
-      where: { id },
-    })
 
     return NextResponse.json({ success: true })
   } catch (error) {
