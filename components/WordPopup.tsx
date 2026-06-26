@@ -166,10 +166,12 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
       className="fixed z-50"
       style={{ left, top }}
     >
-      <div className="bg-[#080d19]/90 backdrop-blur-xl text-slate-100 p-3.5 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.6)] border border-slate-800/80 text-xs max-w-[220px] leading-relaxed">
+      <div className="backdrop-blur-xl p-3.5 rounded-xl text-xs max-w-[220px] leading-relaxed"
+        style={{ background: 'var(--card-bg)', color: 'var(--fg)', border: '1px solid var(--card-border)', boxShadow: '0 15px 35px rgba(0,0,0,0.2)' }}>
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-slate-500 hover:text-slate-300 p-1"
+          className="absolute top-2 right-2 p-1"
+          style={{ color: 'var(--fg-muted)' }}
         >
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -178,33 +180,34 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
 
         {loading ? (
           <div className="text-center py-3">
-            <div className="w-4 h-4 rounded-full border border-slate-800 border-t-brand-500 animate-spin mx-auto"></div>
-            <div className="text-slate-500 mt-2">翻译中...</div>
+            <div className="w-4 h-4 rounded-full border-2 border-t-brand-500 animate-spin mx-auto" style={{ borderColor: 'var(--border)', borderTopColor: 'var(--brand-500)' }}></div>
+            <div className="mt-2" style={{ color: 'var(--fg-muted)' }}>翻译中...</div>
           </div>
         ) : error ? (
           <div className="text-center py-3">
             <div className="text-rose-400 mb-1">翻译失败</div>
-            <div className="text-slate-600 text-[10px]">{error}</div>
+            <div className="text-[10px]" style={{ color: 'var(--fg-muted)' }}>{error}</div>
           </div>
         ) : data ? (
           <div className="space-y-2">
             {originalWord && deformedWord && (
-              <div className="flex items-center gap-1.5 pb-2 mb-1 border-b border-slate-800/60">
-                <span className="text-[10px] text-slate-500">{deformedWord}</span>
-                <svg className="w-2.5 h-2.5 text-slate-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-1.5 pb-2 mb-1" style={{ borderBottom: '1px solid var(--border)' }}>
+                <span className="text-[10px]" style={{ color: 'var(--fg-muted)' }}>{deformedWord}</span>
+                <svg className="w-2.5 h-2.5 flex-shrink-0" style={{ color: 'var(--fg-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-                <span className="text-[10px] text-brand-500 font-semibold">{originalWord}</span>
+                <span className="text-[10px] font-semibold" style={{ color: 'var(--brand-500)' }}>{originalWord}</span>
                 {deformationType && (
-                  <span className="text-[9px] bg-brand-500/10 text-brand-500 px-1 py-0.5 rounded font-bold ml-auto">{deformationType}</span>
+                  <span className="text-[9px] px-1 py-0.5 rounded font-bold ml-auto" style={{ background: 'var(--highlight-bg)', color: 'var(--brand-500)' }}>{deformationType}</span>
                 )}
               </div>
             )}
             <div className="flex items-center gap-2">
-              <span className="font-bold text-brand-500">{data.word}</span>
+              <span className="font-bold" style={{ color: 'var(--brand-500)' }}>{data.word}</span>
               <button
                 onClick={() => speakWord(word)}
-                className="p-1 text-slate-500 hover:text-brand-500 transition-colors"
+                className="p-1 transition-colors"
+                style={{ color: 'var(--fg-muted)' }}
                 title="播放发音"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,7 +217,8 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
               <button
                 onClick={toggleFavorite}
                 disabled={favoriteLoading}
-                className={`p-1 transition-colors ${isFavorite ? 'text-rose-400 hover:text-rose-500' : 'text-slate-500 hover:text-rose-400'}`}
+                className="p-1 transition-colors"
+                style={{ color: isFavorite ? '#f43f5e' : 'var(--fg-muted)' }}
                 title={isFavorite ? '取消收藏' : '收藏'}
               >
                 <svg className="w-3.5 h-3.5" fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -223,25 +227,25 @@ export default function WordPopup({ word, position, lookupWord, originalWord, de
               </button>
             </div>
             {data.phonetic && (
-              <div className="text-slate-500">{data.phonetic}</div>
+              <div style={{ color: 'var(--fg-muted)' }}>{data.phonetic}</div>
             )}
 
             {data.chinese && (
-              <div className="text-slate-400 font-medium">{cleanChinese(data.chinese)}</div>
+              <div className="font-medium" style={{ color: 'var(--fg-secondary)' }}>{cleanChinese(data.chinese)}</div>
             )}
 
             {data.definition && (
-              <div className="text-slate-500 text-[11px]">{cleanDefinition(data.definition)}</div>
+              <div className="text-[11px]" style={{ color: 'var(--fg-muted)' }}>{cleanDefinition(data.definition)}</div>
             )}
 
             {data.example && (
-              <div className="text-slate-500 text-[11px] italic border-t border-slate-800/60 pt-2 mt-2">
+              <div className="text-[11px] italic pt-2 mt-2" style={{ color: 'var(--fg-muted)', borderTop: '1px solid var(--border)' }}>
                 {data.example}
               </div>
             )}
           </div>
         ) : (
-          <div className="text-center py-3 text-slate-500">暂无释义</div>
+          <div className="text-center py-3" style={{ color: 'var(--fg-muted)' }}>暂无释义</div>
         )}
       </div>
     </div>

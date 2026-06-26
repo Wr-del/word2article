@@ -74,19 +74,19 @@ export default function HistoryPage() {
 
   return (
     <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
-      <div className="flex items-center justify-between border-b border-slate-900 pb-4">
+      <div className="flex items-center justify-between pb-4" style={{ borderBottom: '1px solid var(--border)' }}>
         <div>
-          <h2 className="text-base font-bold text-slate-200">复习历史</h2>
-          <p className="text-[10px] text-slate-500 mt-0.5">您此前生成的所有文章记录</p>
+          <h2 className="text-base font-bold" style={{ color: 'var(--fg)' }}>复习历史</h2>
+          <p className="text-[10px] mt-0.5" style={{ color: 'var(--fg-muted)' }}>您此前生成的所有文章记录</p>
         </div>
       </div>
 
       {articles.length === 0 ? (
-        <div className="py-16 text-center text-slate-600 border border-dashed border-slate-900 rounded-2xl bg-slate-950/20 p-8">
-          <svg className="w-6 h-6 mx-auto mb-2 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="py-16 text-center rounded-2xl p-8" style={{ border: '1px dashed var(--border)', background: 'var(--input-bg)' }}>
+          <svg className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--fg-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p className="text-xs mb-4">暂无历史记录</p>
+          <p className="text-xs mb-4" style={{ color: 'var(--fg-muted)' }}>暂无历史记录</p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-brand-500 hover:text-brand-400 bg-brand-500/10 hover:bg-brand-500/20 rounded-lg transition-all duration-200"
@@ -103,25 +103,26 @@ export default function HistoryPage() {
             <Link
               key={article.id}
               href={`/article/${article.id}`}
-              className="block glass-card p-4 rounded-xl custom-shadow space-y-3 relative group hover:border-slate-800 transition-all duration-300 cursor-pointer"
+              className="block glass-card p-4 rounded-xl custom-shadow space-y-3 relative group transition-all duration-300 cursor-pointer"
               style={{ animationDelay: `${idx * 40}ms` }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] bg-slate-950 border border-slate-900 text-slate-400 px-2 py-0.5 rounded font-bold">
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold" style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', color: 'var(--fg-secondary)' }}>
                     {article.difficulty.toUpperCase()}
                   </span>
-                  <span className="text-[10px] bg-slate-950 border border-slate-900 text-slate-500 px-2 py-0.5 rounded font-bold">
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold" style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', color: 'var(--fg-muted)' }}>
                     {STYLE_LABELS[article.style] || '阅读'}
                   </span>
-                  <span className="text-[10px] text-slate-600" suppressHydrationWarning>
+                  <span className="text-[10px]" style={{ color: 'var(--fg-muted)' }} suppressHydrationWarning>
                     {new Date(article.createdAt).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
                 <button
                   onClick={(e) => handleDelete(article.id, e)}
                   disabled={deletingId === article.id}
-                  className="p-1.5 text-slate-600 hover:text-rose-400 hover:bg-rose-500/5 rounded-lg transition-all"
+                  className="p-1.5 rounded-lg transition-all"
+                  style={{ color: 'var(--fg-muted)' }}
                   title="删除"
                 >
                   {deletingId === article.id ? (
@@ -136,8 +137,8 @@ export default function HistoryPage() {
                   )}
                 </button>
               </div>
-              <div className="text-xs text-slate-400 font-medium">{article.title}</div>
-              <div className="text-[10px] text-slate-600">{article.wordCount} 个单词</div>
+              <div className="text-xs font-medium" style={{ color: 'var(--fg-secondary)' }}>{article.title}</div>
+              <div className="text-[10px]" style={{ color: 'var(--fg-muted)' }}>{article.wordCount} 个单词</div>
             </Link>
           ))}
         </div>

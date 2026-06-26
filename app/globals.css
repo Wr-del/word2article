@@ -1,64 +1,151 @@
 @import "tailwindcss";
 
+/* ========== 主题色变量 ========== */
 :root {
-  --background: #03060c;
-  --foreground: #e2e8f0;
+  --bg: #f8fafc;
+  --bg-secondary: #ffffff;
+  --fg: #0f172a;
+  --fg-secondary: #475569;
+  --fg-muted: #94a3b8;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-glow: rgba(16, 185, 129, 0.04);
+  --header-bg: rgba(248, 250, 252, 0.85);
+  --footer-border: rgba(0, 0, 0, 0.06);
+  --footer-text: #94a3b8;
   --brand-500: #10b981;
   --brand-600: #059669;
   --accent-500: #3b82f6;
+  --highlight-bg: rgba(16, 185, 129, 0.1);
+  --highlight-border: rgba(16, 185, 129, 0.4);
+  --highlight-hover-bg: rgba(16, 185, 129, 0.18);
+  --highlight-hover-border: rgba(16, 185, 129, 0.7);
+  --deform-bg: rgba(59, 130, 246, 0.08);
+  --deform-border: rgba(59, 130, 246, 0.35);
+  --deform-hover-bg: rgba(59, 130, 246, 0.16);
+  --deform-hover-border: rgba(59, 130, 246, 0.65);
+  --mask-color: rgba(16, 185, 129, 0.5);
+  --mask-border: rgba(16, 185, 129, 0.25);
+  --mask-hidden-border: rgba(16, 185, 129, 0.18);
+  --mask-hover-bg: rgba(16, 185, 129, 0.08);
+  --selection-bg: rgba(16, 185, 129, 0.15);
+  --selection-fg: #059669;
+  --input-bg: rgba(241, 245, 249, 0.6);
+  --input-border: rgba(0, 0, 0, 0.1);
+  --input-focus-bg: rgba(241, 245, 249, 0.9);
+  --noise-opacity: 0.03;
+  --particle-opacity-1: 0.06;
+  --particle-opacity-2: 0.04;
+  --particle-opacity-3: 0.02;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #03060c;
+    --bg-secondary: #0a0f1e;
+    --fg: #e2e8f0;
+    --fg-secondary: #94a3b8;
+    --fg-muted: #64748b;
+    --border: rgba(255, 255, 255, 0.05);
+    --border-strong: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(10, 15, 30, 0.45);
+    --card-border: rgba(255, 255, 255, 0.05);
+    --card-glow: rgba(16, 185, 129, 0.07);
+    --header-bg: rgba(3, 6, 12, 0.7);
+    --footer-border: rgba(255, 255, 255, 0.04);
+    --footer-text: #334155;
+    --highlight-bg: rgba(16, 185, 129, 0.08);
+    --highlight-border: rgba(16, 185, 129, 0.4);
+    --highlight-hover-bg: rgba(16, 185, 129, 0.16);
+    --highlight-hover-border: rgba(16, 185, 129, 0.8);
+    --deform-bg: rgba(59, 130, 246, 0.06);
+    --deform-border: rgba(59, 130, 246, 0.35);
+    --deform-hover-bg: rgba(59, 130, 246, 0.14);
+    --deform-hover-border: rgba(59, 130, 246, 0.7);
+    --mask-color: rgba(16, 185, 129, 0.5);
+    --mask-border: rgba(16, 185, 129, 0.2);
+    --mask-hidden-border: rgba(16, 185, 129, 0.15);
+    --mask-hover-bg: rgba(16, 185, 129, 0.06);
+    --selection-bg: rgba(16, 185, 129, 0.2);
+    --selection-fg: #10b981;
+    --input-bg: rgba(7, 13, 25, 0.4);
+    --input-border: rgba(255, 255, 255, 0.08);
+    --input-focus-bg: rgba(7, 13, 25, 0.8);
+    --noise-opacity: 0.015;
+    --particle-opacity-1: 0.08;
+    --particle-opacity-2: 0.06;
+    --particle-opacity-3: 0.03;
+  }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
   --color-brand-500: var(--brand-500);
   --color-brand-600: var(--brand-600);
   --color-accent-500: var(--accent-500);
 }
 
-/* 极致纤细暗色滚动条 */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+/* ========== 基础 ========== */
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
 }
+
+/* ========== 滚动条 ========== */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: var(--border-strong);
   border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: var(--fg-muted);
 }
 
-/* 物理2.5D液态玻璃卡片阴影 */
-.custom-shadow {
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8),
-              0 8px 24px -10px rgba(0, 0, 0, 0.5),
-              inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-/* 移动端单词防选中长按 */
+/* ========== 防选中 ========== */
 .word-badge {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
 }
 
-/* 超拟物液态磨砂玻璃 */
-.glass-card {
-  position: relative;
-  background: rgba(10, 15, 30, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* ========== 毛玻璃卡片 ========== */
+.custom-shadow {
+  box-shadow:
+    0 20px 50px -12px rgba(0, 0, 0, 0.15),
+    0 8px 20px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* 物理流光微发光边框 */
+@media (prefers-color-scheme: dark) {
+  .custom-shadow {
+    box-shadow:
+      0 25px 60px -15px rgba(0, 0, 0, 0.8),
+      0 8px 24px -10px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+.glass-card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
 .glass-card::before {
   content: '';
   position: absolute;
@@ -67,10 +154,10 @@
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.12) 0%,
     rgba(255, 255, 255, 0.02) 40%,
-    rgba(16, 185, 129, 0.08) 80%,
-    rgba(255, 255, 255, 0.03) 100%
+    var(--card-glow) 80%,
+    rgba(255, 255, 255, 0.02) 100%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -79,7 +166,18 @@
   z-index: 2;
 }
 
-/* 动态追光流体图层 */
+@media (prefers-color-scheme: dark) {
+  .glass-card::before {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.02) 40%,
+      rgba(16, 185, 129, 0.08) 80%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+  }
+}
+
 .glass-card::after {
   content: '';
   position: absolute;
@@ -87,94 +185,90 @@
   border-radius: inherit;
   background: radial-gradient(
     350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(16, 185, 129, 0.07) 0%,
-    rgba(59, 130, 246, 0.02) 50%,
+    var(--card-glow) 0%,
     transparent 100%
   );
   opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s;
   pointer-events: none;
   z-index: 1;
 }
-.glass-card:hover::after {
-  opacity: 1;
-}
+.glass-card:hover::after { opacity: 1; }
 
-/* 背景慢速流体动画 */
+/* ========== 背景粒子动画 ========== */
 @keyframes float-fluid-1 {
-  0%, 100% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
   33% { transform: translate(30px, -40px) scale(1.1) rotate(60deg); }
   66% { transform: translate(-20px, 20px) scale(0.95) rotate(120deg); }
 }
 @keyframes float-fluid-2 {
-  0%, 100% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
   50% { transform: translate(-40px, 30px) scale(1.15) rotate(-90deg); }
 }
 @keyframes float-fluid-3 {
-  0%, 100% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
   40% { transform: translate(40px, -15px) scale(0.9) rotate(45deg); }
 }
-
 .animate-fluid-1 { animation: float-fluid-1 25s infinite ease-in-out; }
 .animate-fluid-2 { animation: float-fluid-2 30s infinite ease-in-out; }
 .animate-fluid-3 { animation: float-fluid-3 35s infinite ease-in-out; }
 
-/* 高级荧光手账式高亮单词 */
+/* ========== 单词高亮 ========== */
 .premium-highlight {
   position: relative;
-  background: rgba(16, 185, 129, 0.08);
-  border-bottom: 1.5px dashed rgba(16, 185, 129, 0.4);
+  background: var(--highlight-bg);
+  border-bottom: 1.5px dashed var(--highlight-border);
   padding: 1px 5px;
   border-radius: 4px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s;
 }
 .premium-highlight:hover, .premium-highlight:active {
-  background: rgba(16, 185, 129, 0.16);
+  background: var(--highlight-hover-bg);
   border-bottom-style: solid;
-  border-bottom-color: rgba(16, 185, 129, 0.8);
+  border-bottom-color: var(--highlight-hover-border);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
   transform: translateY(-1px);
 }
 
-/* 遮罩模式：目标单词遮罩样式 */
-.mask-word {
-  position: relative;
-  padding: 1px 2px;
-  border-radius: 3px;
-  border-bottom: 1.5px dotted rgba(16, 185, 129, 0.2);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.mask-word-reveal {
-  color: rgba(16, 185, 129, 0.5);
-}
-.mask-word-hidden {
-  color: transparent;
-  user-select: none;
-  border-bottom: 1px dotted rgba(16, 185, 129, 0.15);
-}
-.mask-word:hover {
-  background: rgba(16, 185, 129, 0.06);
-  border-bottom-color: rgba(16, 185, 129, 0.35);
-}
-
-/* 变形单词高亮样式 */
+/* 变形单词高亮 */
 .deformation-highlight {
   position: relative;
-  background: rgba(59, 130, 246, 0.06);
-  border-bottom: 1.5px dotted rgba(59, 130, 246, 0.35);
+  background: var(--deform-bg);
+  border-bottom: 1.5px dotted var(--deform-border);
   padding: 1px 5px;
   border-radius: 4px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s;
 }
 .deformation-highlight:hover, .deformation-highlight:active {
-  background: rgba(59, 130, 246, 0.14);
+  background: var(--deform-hover-bg);
   border-bottom-style: solid;
-  border-bottom-color: rgba(59, 130, 246, 0.7);
+  border-bottom-color: var(--deform-hover-border);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
   transform: translateY(-1px);
 }
 
-/* 苹果灵动岛 Toast 专属降落动画 */
+/* 遮罩模式 */
+.mask-word {
+  position: relative;
+  padding: 1px 2px;
+  border-radius: 3px;
+  border-bottom: 1.5px dotted var(--mask-border);
+  transition: all 0.2s;
+}
+.mask-word-reveal {
+  color: var(--mask-color);
+}
+.mask-word-hidden {
+  color: transparent;
+  user-select: none;
+  border-bottom: 1px dotted var(--mask-hidden-border);
+}
+.mask-word:hover {
+  background: var(--mask-hover-bg);
+  border-bottom-color: var(--mask-color);
+}
+
+/* ========== Toast 动画 ========== */
 @keyframes dynamic-island-in {
   0% { transform: translate(-50%, -40px) scale(0.85); opacity: 0; filter: blur(4px); }
   70% { transform: translate(-50%, 20px) scale(1.03); opacity: 1; filter: blur(0); }
@@ -182,17 +276,4 @@
 }
 .island-toast {
   animation: dynamic-island-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  antialiased: true;
-}
-
-/* 选择文本颜色 */
-::selection {
-  background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
 }

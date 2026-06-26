@@ -42,42 +42,39 @@ export default function Home() {
 
   const handlePdfImport = (words: string[]) => {
     setShowPdfImport(false)
-    // 将导入的单词填入输入框，而不是直接生成
     setImportedText(words.join(', '))
   }
 
   return (
     <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
-      {/* 极简标题 */}
       <div className="text-center space-y-1.5 py-4">
-        <h2 className="text-xl font-bold text-slate-200 tracking-wider">记忆工作台</h2>
-        <p className="text-xs text-slate-500">将零碎的单词变成文章，通过语境记忆单词</p>
+        <h2 className="text-xl font-bold tracking-wider" style={{ color: 'var(--fg)' }}>记忆工作台</h2>
+        <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>将零碎的单词变成文章，通过语境记忆单词</p>
       </div>
 
-      {/* 核心中央卡片 */}
-      <div className="glass-card rounded-2xl custom-shadow p-5 md:p-6 space-y-5 hover:border-slate-800/60 transition-all duration-300">
+      <div className="glass-card rounded-2xl custom-shadow p-5 md:p-6 space-y-5 transition-all duration-300">
         <WordInput
           onSubmit={handleSubmit}
           loading={loading}
           initialText={importedText}
         />
 
-        {/* 分割线 */}
-        <div className="border-t border-slate-900/60"></div>
+        <div style={{ borderTop: '1px solid var(--border)' }}></div>
 
-        {/* PDF 导入入口 */}
         <button
           onClick={() => setShowPdfImport(true)}
-          className="w-full py-3 border border-slate-800/80 hover:border-slate-700 hover:text-slate-200 bg-slate-900/10 text-slate-400 font-semibold text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5 hover:bg-slate-900/30"
+          className="w-full py-3 font-semibold text-xs rounded-xl transition-all duration-200 flex items-center justify-center gap-2.5"
+          style={{ border: '1px solid var(--border)', color: 'var(--fg-secondary)', background: 'transparent' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--border-strong)'; e.currentTarget.style.color = 'var(--fg)' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--fg-secondary)' }}
         >
-          <svg className="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3.5 h-3.5" style={{ color: 'var(--brand-500)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           从 PDF 词单导入单词
         </button>
       </div>
 
-      {/* PDF导入弹窗 */}
       {showPdfImport && (
         <PdfImport
           onImport={handlePdfImport}
