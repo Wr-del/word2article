@@ -11,7 +11,7 @@ export async function sendVerificationCode(email: string, code: string) {
   }
 
   await resend.emails.send({
-    from: 'Word2Article <noreply@word2article.vercel.app>',
+    from: 'Word2Article <onboarding@resend.dev>',
     to: email,
     subject: 'Word2Article 登录验证码',
     html: `
