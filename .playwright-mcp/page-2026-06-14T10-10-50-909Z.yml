@@ -1,0 +1,44 @@
+- generic [active] [ref=e1]:
+  - img
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Word2Article" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - generic [ref=e8]: Word2Article
+      - navigation [ref=e9]:
+        - link "首页" [ref=e10] [cursor=pointer]:
+          - /url: /
+        - link "生词本" [ref=e11] [cursor=pointer]:
+          - /url: /favorites
+        - link "历史记录" [ref=e12] [cursor=pointer]:
+          - /url: /history
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - heading "记忆工作台" [level=2] [ref=e15]
+      - paragraph [ref=e16]: 将零碎的单词变成文章，通过语境记忆单词
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - textbox "贴入您的单词列表，支持任意格式： 1. abandon 放弃 2. ability 能力 achieve, belief, confidence..." [disabled] [ref=e20]: abandon ability achieve
+          - button "清空" [ref=e49]:
+            - img [ref=e50]
+        - generic [ref=e21]:
+          - generic [ref=e22]: 风格
+          - button "故事" [ref=e23]
+          - button "新闻" [ref=e24]
+          - button "科普" [ref=e25]
+          - button "对话" [ref=e26]
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - button "CET-4" [ref=e29]
+            - button "CET-6" [ref=e30]
+          - button "正在生成中..." [disabled] [ref=e53]: 正在生成中...
+      - button "从 PDF 词单导入单词" [ref=e35]:
+        - img [ref=e36]
+        - text: 从 PDF 词单导入单词
+  - contentinfo [ref=e38]:
+    - paragraph [ref=e39]: © 2026 Word2Article. 融入语境，高效记单词
+  - button "Open Next.js Dev Tools" [ref=e45] [cursor=pointer]:
+    - img [ref=e46]
+  - alert [ref=e52]

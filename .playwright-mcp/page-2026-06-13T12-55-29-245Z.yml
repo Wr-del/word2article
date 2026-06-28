@@ -1,0 +1,252 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e9]:
+            - link "wr-del's projects Hobby" [ref=e10] [cursor=pointer]:
+              - /url: /wr-dels-projects
+              - img [ref=e11]
+              - generic [ref=e12]:
+                - generic [ref=e13]: wr-del's projects
+                - generic [ref=e14]: Hobby
+            - button [ref=e15] [cursor=pointer]:
+              - img [ref=e17]
+          - button "Find… F" [ref=e20]:
+            - generic [ref=e22]:
+              - img [ref=e24]
+              - generic [ref=e26]: Find…
+              - generic [ref=e28]: F
+        - navigation [ref=e30]:
+          - generic [ref=e33]:
+            - link "Projects" [ref=e34] [cursor=pointer]:
+              - /url: /wr-dels-projects
+              - img [ref=e36]
+              - generic [ref=e39]: Projects
+            - link "Deployments" [ref=e40] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/deployments
+              - img [ref=e42]
+              - generic [ref=e45]: Deployments
+            - link "Logs" [ref=e46] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/logs
+              - img [ref=e48]
+              - generic [ref=e51]: Logs
+            - link "Analytics" [ref=e52] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/analytics
+              - img [ref=e54]
+              - generic [ref=e57]: Analytics
+            - link "Speed Insights" [ref=e58] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/speed-insights
+              - img [ref=e60]
+              - generic [ref=e63]: Speed Insights
+            - link "Observability" [ref=e64] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/observability
+              - img [ref=e66]
+              - generic [ref=e69]: Observability
+              - img [ref=e71]
+            - link "Firewall" [ref=e73] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/firewall
+              - img [ref=e75]
+              - generic [ref=e79]: Firewall
+            - link "CDN" [ref=e80] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/cdn
+              - img [ref=e82]
+              - generic [ref=e85]: CDN
+            - separator [ref=e86]
+            - link "Environment Variables" [ref=e87] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/settings/environment-variables
+              - img [ref=e89]
+              - generic [ref=e92]: Environment Variables
+            - link "Domains" [ref=e93] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/domains
+              - img [ref=e95]
+              - generic [ref=e98]: Domains
+            - link "Connect Beta" [ref=e99] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/connect
+              - img [ref=e101]
+              - generic [ref=e103]:
+                - generic [ref=e104]: Connect
+                - generic [ref=e105]: Beta
+            - link "Integrations" [ref=e106] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/integrations
+              - img [ref=e108]
+              - generic [ref=e111]: Integrations
+            - link "Storage" [ref=e112] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/stores
+              - img [ref=e114]
+              - generic [ref=e117]: Storage
+            - link "Flags" [ref=e118] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/experimentation/collections
+              - img [ref=e120]
+              - generic [ref=e123]: Flags
+            - link "Agent" [ref=e124] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/agent
+              - img [ref=e126]
+              - generic [ref=e129]: Agent
+              - img [ref=e131]
+            - link "AI Gateway" [ref=e133] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/ai-gateway
+              - img [ref=e135]
+              - generic [ref=e138]: AI Gateway
+              - img [ref=e140]
+            - link "Sandboxes" [ref=e142] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/sandboxes
+              - img [ref=e144]
+              - generic [ref=e147]: Sandboxes
+              - img [ref=e149]
+            - link "Workflows" [ref=e151] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/workflows
+              - img [ref=e153]
+              - generic [ref=e156]: Workflows
+            - separator [ref=e157]
+            - link "Usage" [ref=e158] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/usage
+              - img [ref=e160]
+              - generic [ref=e163]: Usage
+            - link "Support" [ref=e164] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/support
+              - img [ref=e166]
+              - generic [ref=e169]: Support
+            - link "Settings" [ref=e170] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/settings
+              - img [ref=e172]
+              - generic [ref=e175]: Settings
+              - img [ref=e177]
+        - generic [ref=e181]:
+          - button "Avatar for wr-del wr-del" [ref=e182] [cursor=pointer]:
+            - img "Avatar for wr-del" [ref=e183]:
+              - img "Avatar for wr-del" [ref=e184]
+            - generic [ref=e186]: wr-del
+            - img [ref=e188]
+          - button "7 unseen notifications" [ref=e192] [cursor=pointer]:
+            - generic [ref=e194]:
+              - img
+      - button [ref=e196] [cursor=pointer]:
+        - img [ref=e197]
+    - generic [ref=e200]:
+      - generic [ref=e201]:
+        - button "All projects" [ref=e205] [cursor=pointer]:
+          - generic [ref=e206]: All projects
+          - img [ref=e208]
+        - generic [ref=e212]: Environment Variables
+      - generic [ref=e219]:
+        - generic [ref=e220]:
+          - heading "Environment Variables" [level=1] [ref=e222]
+          - paragraph [ref=e223]:
+            - text: Environment Variables added to the Team can be used by all, or a subset of, your Projects.
+            - link "Learn more" [ref=e224] [cursor=pointer]:
+              - /url: /docs/environment-variables/shared-environment-variables
+              - text: Learn more
+              - img [ref=e225]
+        - tablist [ref=e228]:
+          - tab "Projects" [selected] [ref=e229] [cursor=pointer]
+          - tab "Shared" [ref=e230] [cursor=pointer]
+        - generic [ref=e231]:
+          - generic [ref=e232]:
+            - generic [ref=e234]:
+              - searchbox "Search" [ref=e235]
+              - img [ref=e237]
+            - combobox [ref=e240]:
+              - generic [ref=e242]:
+                - searchbox [ref=e243]: All Environments
+                - button "Open menu" [ref=e244] [cursor=pointer]:
+                  - img [ref=e245]
+            - combobox [ref=e248]:
+              - generic [ref=e249]:
+                - generic:
+                  - img
+                - searchbox "All Editors…" [ref=e250]
+                - button "Open menu" [ref=e251] [cursor=pointer]:
+                  - img [ref=e252]
+            - generic [ref=e254]:
+              - generic [ref=e256]:
+                - combobox "Filter variables by status" [ref=e257] [cursor=pointer]:
+                  - option "All Variables" [selected]
+                  - option "Needs Attention"
+                - generic:
+                  - img
+              - generic [ref=e259]:
+                - generic:
+                  - img
+                - combobox [ref=e260] [cursor=pointer]:
+                  - option "Sort by…" [disabled]
+                  - option "Last Updated" [selected]
+                  - option "Name"
+                  - option "Type"
+                - generic:
+                  - img
+          - generic [ref=e261]:
+            - heading "word2article 4" [level=2] [ref=e263]:
+              - img [ref=e266] [cursor=pointer]
+              - link "word2article" [ref=e267] [cursor=pointer]:
+                - /url: /wr-dels-projects/word2article/settings/environment-variables
+              - generic [ref=e268]: "4"
+            - generic [ref=e269]:
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - generic [ref=e272]:
+                    - img "Prisma Postgres" [ref=e273]:
+                      - img "Prisma Postgres" [ref=e274]
+                    - link "prisma-postgres-violet-chair" [ref=e275] [cursor=pointer]:
+                      - /url: /wr-dels-projects/word2article/integrations/prisma/icfg_9iunwtuBJwN6aV6VOsiYhjoj/resources/storage/store_xxTSYrF5pF2xqNDJ/guides
+                    - generic [ref=e276]: Prisma Postgres
+                  - button "Resource actions" [ref=e278] [cursor=pointer]:
+                    - img [ref=e283]
+                - table [ref=e286]:
+                  - rowgroup [ref=e291]
+                  - rowgroup [ref=e292]:
+                    - row "DATABASE_POSTGRES_URL Sensitive Production and Preview 45s ago" [ref=e293]:
+                      - cell "DATABASE_POSTGRES_URL Sensitive" [ref=e294]:
+                        - generic [ref=e295]:
+                          - link "DATABASE_POSTGRES_URL" [ref=e296] [cursor=pointer]:
+                            - /url: /wr-dels-projects/word2article/settings/environment-variables?tab=project&q=DATABASE_POSTGRES_URL
+                          - generic [ref=e297]: Sensitive
+                      - cell "Production and Preview" [ref=e298]
+                      - cell "45s ago" [ref=e299]:
+                        - generic [ref=e300]:
+                          - generic [ref=e302] [cursor=pointer]: 45s ago
+                          - img [ref=e303]
+                    - row "DATABASE_PRISMA_DATABASE_URL Sensitive Production and Preview 45s ago" [ref=e304]:
+                      - cell "DATABASE_PRISMA_DATABASE_URL Sensitive" [ref=e305]:
+                        - generic [ref=e306]:
+                          - link "DATABASE_PRISMA_DATABASE_URL" [ref=e307] [cursor=pointer]:
+                            - /url: /wr-dels-projects/word2article/settings/environment-variables?tab=project&q=DATABASE_PRISMA_DATABASE_URL
+                          - generic [ref=e308]: Sensitive
+                      - cell "Production and Preview" [ref=e309]
+                      - cell "45s ago" [ref=e310]:
+                        - generic [ref=e311]:
+                          - generic [ref=e313] [cursor=pointer]: 45s ago
+                          - img [ref=e314]
+                    - row "DATABASE_URL Sensitive Production and Preview 45s ago" [ref=e315]:
+                      - cell "DATABASE_URL Sensitive" [ref=e316]:
+                        - generic [ref=e317]:
+                          - link "DATABASE_URL" [ref=e318] [cursor=pointer]:
+                            - /url: /wr-dels-projects/word2article/settings/environment-variables?tab=project&q=DATABASE_URL
+                          - generic [ref=e319]: Sensitive
+                      - cell "Production and Preview" [ref=e320]
+                      - cell "45s ago" [ref=e321]:
+                        - generic [ref=e322]:
+                          - generic [ref=e324] [cursor=pointer]: 45s ago
+                          - img [ref=e325]
+              - table [ref=e327]:
+                - rowgroup [ref=e332]
+                - rowgroup [ref=e333]:
+                  - row "DEEPSEEK_API_KEY Sensitive Production and Preview May 27" [ref=e334]:
+                    - cell "DEEPSEEK_API_KEY Sensitive" [ref=e335]:
+                      - generic [ref=e336]:
+                        - link "DEEPSEEK_API_KEY" [ref=e337] [cursor=pointer]:
+                          - /url: /wr-dels-projects/word2article/settings/environment-variables?tab=project&q=DEEPSEEK_API_KEY
+                        - generic [ref=e338]: Sensitive
+                    - cell "Production and Preview" [ref=e339]
+                    - cell "May 27" [ref=e340]:
+                      - generic [ref=e341]:
+                        - generic [ref=e343] [cursor=pointer]: May 27
+                        - img [ref=e344]
+  - alert [ref=e346]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - img

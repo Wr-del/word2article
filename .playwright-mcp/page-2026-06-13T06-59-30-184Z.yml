@@ -1,0 +1,5 @@
+- generic [ref=e4]:
+  - heading "Select lesson Type" [level=1] [ref=e5]
+  - generic [ref=e6]:
+    - heading "Armenia to English" [level=3] [ref=e7]
+    - heading "English to Armenia" [level=3] [ref=e8]

@@ -1,0 +1,209 @@
+- generic [ref=e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e9]:
+            - link "wr-del's projects Hobby" [ref=e10] [cursor=pointer]:
+              - /url: /wr-dels-projects
+              - img [ref=e11]
+              - generic [ref=e12]:
+                - generic [ref=e13]: wr-del's projects
+                - generic [ref=e14]: Hobby
+            - button [ref=e15] [cursor=pointer]:
+              - img [ref=e17]
+          - button "Find… F" [ref=e20]:
+            - generic [ref=e22]:
+              - img [ref=e24]
+              - generic [ref=e26]: Find…
+              - generic [ref=e28]: F
+        - navigation [ref=e30]:
+          - generic [ref=e33]:
+            - link "Projects" [ref=e34] [cursor=pointer]:
+              - /url: /wr-dels-projects
+              - img [ref=e36]
+              - generic [ref=e39]: Projects
+            - link "Deployments" [ref=e40] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/deployments
+              - img [ref=e42]
+              - generic [ref=e45]: Deployments
+            - link "Logs" [ref=e46] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/logs
+              - img [ref=e48]
+              - generic [ref=e51]: Logs
+            - link "Analytics" [ref=e52] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/analytics
+              - img [ref=e54]
+              - generic [ref=e57]: Analytics
+            - link "Speed Insights" [ref=e58] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/speed-insights
+              - img [ref=e60]
+              - generic [ref=e63]: Speed Insights
+            - link "Observability" [ref=e64] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/observability
+              - img [ref=e66]
+              - generic [ref=e69]: Observability
+              - img [ref=e71]
+            - link "Firewall" [ref=e73] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/firewall
+              - img [ref=e75]
+              - generic [ref=e79]: Firewall
+            - link "CDN" [ref=e80] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/cdn
+              - img [ref=e82]
+              - generic [ref=e85]: CDN
+            - separator [ref=e86]
+            - link "Environment Variables" [ref=e87] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/settings/environment-variables
+              - img [ref=e89]
+              - generic [ref=e92]: Environment Variables
+            - link "Domains" [ref=e93] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/domains
+              - img [ref=e95]
+              - generic [ref=e98]: Domains
+            - link "Connect Beta" [ref=e99] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/connect
+              - img [ref=e101]
+              - generic [ref=e103]:
+                - generic [ref=e104]: Connect
+                - generic [ref=e105]: Beta
+            - link "Integrations" [ref=e106] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/integrations
+              - img [ref=e108]
+              - generic [ref=e111]: Integrations
+            - link "Storage" [ref=e112] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/stores
+              - img [ref=e114]
+              - generic [ref=e117]: Storage
+            - link "Flags" [ref=e118] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/experimentation/collections
+              - img [ref=e120]
+              - generic [ref=e123]: Flags
+            - link "Agent" [ref=e124] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/agent
+              - img [ref=e126]
+              - generic [ref=e129]: Agent
+              - img [ref=e131]
+            - link "AI Gateway" [ref=e133] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/ai-gateway
+              - img [ref=e135]
+              - generic [ref=e138]: AI Gateway
+              - img [ref=e140]
+            - link "Sandboxes" [ref=e142] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/sandboxes
+              - img [ref=e144]
+              - generic [ref=e147]: Sandboxes
+              - img [ref=e149]
+            - link "Workflows" [ref=e151] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/workflows
+              - img [ref=e153]
+              - generic [ref=e156]: Workflows
+            - separator [ref=e157]
+            - link "Usage" [ref=e158] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/usage
+              - img [ref=e160]
+              - generic [ref=e163]: Usage
+            - link "Support" [ref=e164] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/support
+              - img [ref=e166]
+              - generic [ref=e169]: Support
+            - link "Settings" [ref=e170] [cursor=pointer]:
+              - /url: /wr-dels-projects/~/settings
+              - img [ref=e172]
+              - generic [ref=e175]: Settings
+              - img [ref=e177]
+        - generic [ref=e181]:
+          - button "Avatar for wr-del wr-del" [ref=e182] [cursor=pointer]:
+            - img "Avatar for wr-del" [ref=e183]:
+              - img "Avatar for wr-del" [ref=e184]
+            - generic [ref=e186]: wr-del
+            - img [ref=e188]
+          - button "7 unseen notifications" [ref=e192] [cursor=pointer]:
+            - generic [ref=e193]:
+              - generic [ref=e194]:
+                - img
+              - img [ref=e195]
+      - button [ref=e198] [cursor=pointer]:
+        - img [ref=e199]
+    - generic [ref=e202]:
+      - generic [ref=e203]:
+        - button "All projects" [ref=e207] [cursor=pointer]:
+          - generic [ref=e208]: All projects
+          - img [ref=e210]
+        - generic [ref=e214]: Storage
+      - generic [ref=e554]:
+        - generic [ref=e555]:
+          - generic [ref=e556]:
+            - searchbox "Search" [ref=e557]
+            - img [ref=e559]
+          - combobox [ref=e561]:
+            - generic [ref=e562]:
+              - generic:
+                - img
+              - searchbox [ref=e563]: All
+              - button "Open menu" [ref=e564] [cursor=pointer]:
+                - img [ref=e565]
+          - button "Create Database" [ref=e567] [cursor=pointer]:
+            - generic [ref=e568]: Create Database
+        - generic [ref=e574]:
+          - link "prisma-postgres-violet-chair Prisma Postgres - Free Created May 27" [ref=e575] [cursor=pointer]:
+            - /url: /wr-dels-projects/~/integrations/prisma/icfg_9iunwtuBJwN6aV6VOsiYhjoj/resources/storage/store_xxTSYrF5pF2xqNDJ/guides
+            - generic [ref=e577]:
+              - generic [ref=e578]:
+                - img [ref=e582]
+                - generic [ref=e583]:
+                  - generic [ref=e584]: prisma-postgres-violet-chair
+                  - generic [ref=e585]: Prisma Postgres - Free
+              - generic "Created at 2026-05-27T03:41:36.597Z" [ref=e589]: Created May 27
+          - button "Connect to Project" [ref=e592] [cursor=pointer]:
+            - generic [ref=e593]: Connect to Project
+  - alert [ref=e481]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - img
+  - dialog [ref=e597]:
+    - generic [ref=e598]:
+      - generic [ref=e600]:
+        - banner [ref=e601]:
+          - heading "Connect a Project to prisma-postgres-violet-chair" [level=3] [ref=e602]
+        - generic [ref=e604]:
+          - link:
+            - /url: "#"
+          - generic [ref=e606]:
+            - generic [ref=e608]: Project
+            - combobox [ref=e609]:
+              - generic [ref=e610]:
+                - generic:
+                  - img
+                - searchbox "Search projects…" [active] [ref=e611]: word2article
+                - button "Clear selected value" [ref=e665] [cursor=pointer]:
+                  - img [ref=e666]
+          - generic [ref=e615]:
+            - generic [ref=e618]:
+              - generic [ref=e620]: Environments
+              - button "Production, Preview" [ref=e621] [cursor=pointer]:
+                - generic [ref=e623]:
+                  - img [ref=e625]
+                  - generic [ref=e627]: Production, Preview
+                - img [ref=e629]
+            - generic [ref=e631]:
+              - generic [ref=e632]:
+                - generic [ref=e633]: Custom Environment Variable Prefix
+                - generic [ref=e634]:
+                  - textbox "Custom Environment Variable Prefix" [ref=e635]:
+                    - /placeholder: STORAGE
+                  - generic [ref=e636]: _URL
+              - generic "Sensitive" [ref=e639]:
+                - generic [ref=e641]:
+                  - generic [ref=e642]: Sensitive
+                  - img [ref=e644]
+                - checkbox "Sensitive" [checked] [ref=e647]
+      - contentinfo [ref=e650]:
+        - button "Cancel" [ref=e651] [cursor=pointer]:
+          - generic [ref=e652]: Cancel
+        - button "Connect Project" [ref=e653] [cursor=pointer]:
+          - generic [ref=e654]: Connect Project

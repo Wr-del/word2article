@@ -1,0 +1,46 @@
+- generic [active] [ref=e1]:
+  - img
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Word2Article" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - generic [ref=e8]: Word2Article
+      - navigation [ref=e9]:
+        - link "首页" [ref=e10] [cursor=pointer]:
+          - /url: /
+        - link "生词本" [ref=e11] [cursor=pointer]:
+          - /url: /favorites
+        - link "历史记录" [ref=e12] [cursor=pointer]:
+          - /url: /history
+  - main [ref=e55]:
+    - link "返回首页" [ref=e57] [cursor=pointer]:
+      - /url: /
+      - img [ref=e58]
+      - text: 返回首页
+    - generic [ref=e60]:
+      - generic [ref=e61]:
+        - generic [ref=e64]: 沉浸式阅读语境
+        - generic [ref=e65]:
+          - button "复制全文" [ref=e66]:
+            - img [ref=e67]
+            - generic [ref=e69]: 复制全文
+          - generic [ref=e70]: CET4
+          - generic [ref=e71]: 故事
+      - generic [ref=e72]:
+        - generic [ref=e75]: The heavy rain had not stopped for three days. The small village at the foot of the mountain was in danger. The local government ordered everyone to abandon their homes immediately. Li Wei, a young teacher, helped his elderly neighbors move to higher ground. He knew that the ability to stay calm in a crisis was very important. As he carried an old woman on his back, he thought about his own family. His wife and daughter had already left. He hoped they were safe. After hours of hard work, all the villagers were finally in a safe place. Li Wei felt tired but relieved. He had helped others achieve safety. That night, as the rain continued to fall, he sat with the villagers in a temporary shelter. They shared food and stories. An old man said, "You have a kind heart. You helped us when we needed it most." Li Wei smiled. He knew that true happiness came from helping others. The next morning, the sun came out. The water began to go down. The villagers started to rebuild their lives. Li Wei knew that they would never abandon each other again. Their shared experience had made them stronger. He looked at the clear sky and felt hope for the future.
+        - generic [ref=e76]:
+          - heading "参考中文译文" [level=4] [ref=e77]
+          - paragraph [ref=e78]: 大雨已经连续下了三天。山脚下的小村庄岌岌可危。当地政府下令所有人立即撤离家园。青年教师李伟搀扶着年迈的邻居们转移到高地。他深知在危机中保持冷静至关重要。背着老妇人的时候，他想起自己的家人——妻子和女儿已经先行撤离，他祈愿她们平安无事。经过数小时的奋战，所有村民终于抵达安全地带。李伟虽感疲惫，却如释重负——他帮助他人脱离了险境。那夜，雨势未歇，他与村民们在临时避难所里围坐，分享食物与故事。一位老人感慨道："你有一颗善良的心。在我们最需要帮助的时候伸出了援手。"李伟微笑着，他明白真正的幸福源于助人。翌日清晨，云开日出，水位渐退。村民们开始重建家园。李伟知道，经历过这场患难，他们再也不会彼此抛弃。共同的经历让大家更加团结。他仰望晴空，对未来充满希望。
+    - generic [ref=e79]:
+      - link "开始测试" [ref=e80] [cursor=pointer]:
+        - /url: /quiz/22
+      - link "生成新文章" [ref=e81] [cursor=pointer]:
+        - /url: /
+      - link "历史记录" [ref=e82] [cursor=pointer]:
+        - /url: /history
+  - contentinfo [ref=e38]:
+    - paragraph [ref=e39]: © 2026 Word2Article. 融入语境，高效记单词
+  - button "Open Next.js Dev Tools" [ref=e45] [cursor=pointer]:
+    - img [ref=e46]
+  - alert [ref=e52]

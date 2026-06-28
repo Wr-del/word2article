@@ -1,0 +1,49 @@
+- generic [active] [ref=e1]:
+  - img
+  - banner [ref=e2]:
+    - link "Word2Article" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - generic [ref=e8]: Word2Article
+  - main [ref=e10]:
+    - generic [ref=e11]:
+      - heading "工作台" [level=1] [ref=e12]
+      - paragraph [ref=e13]: 将词汇列表转化为语境文章，通过阅读增强记忆
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]: 词汇输入
+        - button "导入 PDF" [ref=e17]:
+          - img [ref=e18]
+          - text: 导入 PDF
+      - textbox "粘贴单词列表，用逗号或换行分隔。如：abandon, ability, achieve, belief..." [ref=e20]
+      - generic [ref=e22]: 已检测 0 个单词
+    - generic [ref=e23]:
+      - text: 文章风格
+      - generic [ref=e24]:
+        - button "故事" [ref=e25]: 故事
+        - button "新闻报道" [ref=e28]: 新闻报道
+        - button "科普文章" [ref=e30]: 科普文章
+        - button "对话" [ref=e32]: 对话
+    - generic [ref=e34]:
+      - text: 目标难度
+      - generic [ref=e35]:
+        - button "CET-4" [ref=e36]
+        - button "CET-6" [ref=e37]
+        - button "IELTS" [ref=e38]
+    - button "生成文章" [disabled] [ref=e39]:
+      - img [ref=e40]
+      - text: 生成文章
+  - navigation [ref=e42]:
+    - generic [ref=e43]:
+      - link "工作台" [ref=e44] [cursor=pointer]:
+        - /url: /
+        - img [ref=e45]
+        - generic [ref=e47]: 工作台
+      - link "生词本" [ref=e48] [cursor=pointer]:
+        - /url: /favorites
+        - img [ref=e49]
+        - generic [ref=e51]: 生词本
+      - link "历史记录" [ref=e52] [cursor=pointer]:
+        - /url: /history
+        - img [ref=e53]
+        - generic [ref=e55]: 历史记录

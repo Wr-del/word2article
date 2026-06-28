@@ -1,0 +1,25 @@
+- generic [active] [ref=e1]:
+  - img
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Word2Article" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - generic [ref=e8]: Word2Article
+      - navigation [ref=e9]:
+        - link "首页" [ref=e10] [cursor=pointer]:
+          - /url: /
+        - link "生词本" [ref=e11] [cursor=pointer]:
+          - /url: /favorites
+        - link "历史记录" [ref=e12] [cursor=pointer]:
+          - /url: /history
+  - main [ref=e13]:
+    - generic [ref=e18]:
+      - heading "生词本" [level=2] [ref=e19]
+      - paragraph [ref=e20]: 收藏的单词共 0 个
+    - generic [ref=e21]:
+      - img [ref=e22]
+      - paragraph [ref=e24]: 暂无收藏单词，点击文章中的单词添加收藏
+  - contentinfo [ref=e15]:
+    - paragraph [ref=e16]: © 2026 Word2Article. 融入语境，高效记单词
+  - alert [ref=e17]

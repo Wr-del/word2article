@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth'
+import { auth } from '@/app/api/auth/[...nextauth]/route'
 import { prisma } from '@/lib/db'
 
 export async function getCurrentUser() {

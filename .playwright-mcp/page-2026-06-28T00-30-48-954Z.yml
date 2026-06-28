@@ -1,0 +1,26 @@
+- generic [active] [ref=e1]:
+  - img
+  - banner [ref=e2]:
+    - link "Word2Article" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - generic [ref=e8]: Word2Article
+  - main [ref=e10]:
+    - generic [ref=e11]: 加载中...
+  - navigation [ref=e12]:
+    - generic [ref=e13]:
+      - link "工作台" [ref=e14] [cursor=pointer]:
+        - /url: /
+        - img [ref=e15]
+        - generic [ref=e17]: 工作台
+      - link "生词本" [ref=e18] [cursor=pointer]:
+        - /url: /favorites
+        - img [ref=e19]
+        - generic [ref=e21]: 生词本
+      - link "历史记录" [ref=e22] [cursor=pointer]:
+        - /url: /history
+        - img [ref=e23]
+        - generic [ref=e25]: 历史记录
+  - button "Open Next.js Dev Tools" [ref=e31] [cursor=pointer]:
+    - img [ref=e32]
+  - alert [ref=e35]

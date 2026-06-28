@@ -1,0 +1,246 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e9]:
+            - link "wr-del's projects Hobby" [ref=e10] [cursor=pointer]:
+              - /url: /wr-dels-projects
+              - img [ref=e11]
+              - generic [ref=e12]:
+                - generic [ref=e13]: wr-del's projects
+                - generic [ref=e14]: Hobby
+            - button [ref=e15] [cursor=pointer]:
+              - img [ref=e17]
+          - button "Find… F" [ref=e20]:
+            - generic [ref=e22]:
+              - img [ref=e24]
+              - generic [ref=e26]: Find…
+              - generic [ref=e28]: F
+        - navigation [ref=e30]:
+          - generic [ref=e33]:
+            - link "Other Overview" [ref=e34] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article
+              - img "Other" [ref=e36]:
+                - img "Other" [ref=e37]
+              - generic [ref=e39]: Overview
+            - link "Deployments" [ref=e40] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/deployments
+              - img [ref=e42]
+              - generic [ref=e45]: Deployments
+            - link "Logs" [ref=e46] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/logs
+              - img [ref=e48]
+              - generic [ref=e51]: Logs
+            - link "Analytics" [ref=e52] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/analytics
+              - img [ref=e54]
+              - generic [ref=e57]: Analytics
+            - link "Speed Insights" [ref=e58] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/speed-insights
+              - img [ref=e60]
+              - generic [ref=e63]: Speed Insights
+            - link "Observability" [ref=e64] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/observability
+              - img [ref=e66]
+              - generic [ref=e69]: Observability
+              - img [ref=e71]
+            - link "Firewall" [ref=e73] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/firewall
+              - img [ref=e75]
+              - generic [ref=e79]: Firewall
+              - img [ref=e81]
+            - link "CDN" [ref=e83] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/cdn
+              - img [ref=e85]
+              - generic [ref=e88]: CDN
+              - img [ref=e90]
+            - separator [ref=e92]
+            - link "Environment Variables" [ref=e93] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/settings/environment-variables
+              - img [ref=e95]
+              - generic [ref=e98]: Environment Variables
+            - link "Domains" [ref=e99] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/settings/domains
+              - img [ref=e101]
+              - generic [ref=e104]: Domains
+            - link "Connect Beta" [ref=e105] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/connect
+              - img [ref=e107]
+              - generic [ref=e109]:
+                - generic [ref=e110]: Connect
+                - generic [ref=e111]: Beta
+            - link "Integrations" [ref=e112] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/settings/integrations
+              - img [ref=e114]
+              - generic [ref=e117]: Integrations
+            - link "Storage" [ref=e118] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/stores
+              - img [ref=e120]
+              - generic [ref=e123]: Storage
+            - link "Flags" [ref=e124] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/flags
+              - img [ref=e126]
+              - generic [ref=e129]: Flags
+              - img [ref=e131]
+            - link "Agent" [ref=e133] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/agent
+              - img [ref=e135]
+              - generic [ref=e138]: Agent
+              - img [ref=e140]
+            - link "AI Gateway" [ref=e142] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/ai-gateway
+              - img [ref=e144]
+              - generic [ref=e147]: AI Gateway
+              - img [ref=e149]
+            - link "Sandboxes" [ref=e151] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/sandboxes
+              - img [ref=e153]
+              - generic [ref=e156]: Sandboxes
+              - img [ref=e158]
+            - link "Workflows" [ref=e160] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/workflows
+              - img [ref=e162]
+              - generic [ref=e165]: Workflows
+            - separator [ref=e166]
+            - link "Usage" [ref=e167] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/usage
+              - img [ref=e169]
+              - generic [ref=e172]: Usage
+            - link "Support" [ref=e173] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/support
+              - img [ref=e175]
+              - generic [ref=e178]: Support
+            - link "Settings" [ref=e179] [cursor=pointer]:
+              - /url: /wr-dels-projects/word2article/settings
+              - img [ref=e181]
+              - generic [ref=e184]: Settings
+              - img [ref=e186]
+        - generic [ref=e190]:
+          - button "Avatar for wr-del wr-del" [ref=e191] [cursor=pointer]:
+            - img "Avatar for wr-del" [ref=e192]:
+              - img "Avatar for wr-del" [ref=e193]
+            - generic [ref=e195]: wr-del
+            - img [ref=e197]
+          - button "7 unseen notifications" [ref=e201] [cursor=pointer]:
+            - generic [ref=e203]:
+              - img
+      - button [ref=e205] [cursor=pointer]:
+        - img [ref=e206]
+    - generic [ref=e209]:
+      - generic [ref=e210]:
+        - generic [ref=e213]:
+          - link "Other word2article" [ref=e214] [cursor=pointer]:
+            - /url: /wr-dels-projects/word2article
+            - img "Other" [ref=e215]:
+              - img "Other" [ref=e216]
+            - generic [ref=e218]: word2article
+          - button [ref=e219] [cursor=pointer]:
+            - img [ref=e221]
+          - link "Back to team view" [ref=e225] [cursor=pointer]:
+            - /url: /wr-dels-projects
+            - img [ref=e227]
+        - generic [ref=e231]: Overview
+      - generic [ref=e234]:
+        - generic [ref=e238]:
+          - generic [ref=e241]:
+            - img [ref=e243]
+            - generic [ref=e245]:
+              - heading "No Production Deployment" [level=3] [ref=e246]
+              - paragraph [ref=e247]: Your Production Domain is not serving traffic.
+          - generic [ref=e250]:
+            - generic [ref=e254]:
+              - generic "This deployment had an error." [ref=e255]:
+                - generic [ref=e259]: Error
+              - generic [ref=e260]: ·
+              - 'link "feat: migrate to Vercel Postgres for production deployment - Change Prisma schema from SQLite to PostgreSQL - Add PostgreSQL migration for Article, Word, Favorite tables - Update vercel.json build command to run prisma migrate deploy - Update .gitignore to exclude data files, test files, and mini program - Add favorites, quiz, lemmatizer, local-dict features from previous work Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>" [ref=e261] [cursor=pointer]':
+                - /url: /wr-dels-projects/word2article/9gj9HMWyCtA82mfHDUDjT2Fx5uUF
+            - generic [ref=e263]:
+              - generic [ref=e264]:
+                - generic [ref=e265]: 6h ago
+                - img "github/Wr-del" [ref=e268]:
+                  - img "github/Wr-del" [ref=e269]
+                - generic [ref=e270]: Wr-del
+              - button "Cancel" [disabled] [ref=e273]:
+                - generic [ref=e274]: Cancel
+        - generic [ref=e277]:
+          - generic [ref=e278]:
+            - generic [ref=e279]:
+              - generic [ref=e280]:
+                - paragraph [ref=e281]:
+                  - strong [ref=e282]: Production Checklist
+                - generic [ref=e283]: 1/5
+              - button "Go to page" [ref=e284] [cursor=pointer]:
+                - img [ref=e286]
+              - button [ref=e288] [cursor=pointer]
+            - generic [ref=e292]:
+              - button "Connect Git Repository" [ref=e293] [cursor=pointer]:
+                - img [ref=e294]
+                - generic [ref=e296]: Connect Git Repository
+                - img [ref=e297]
+              - button "Add Custom Domain" [ref=e299] [cursor=pointer]:
+                - img [ref=e300]
+                - generic [ref=e302]: Add Custom Domain
+              - button "Preview Deployment" [ref=e303] [cursor=pointer]:
+                - img [ref=e304]
+                - generic [ref=e306]: Preview Deployment
+              - button "Enable Web Analytics" [ref=e307] [cursor=pointer]:
+                - img [ref=e308]
+                - generic [ref=e310]: Enable Web Analytics
+              - button "Enable Speed Insights" [ref=e311] [cursor=pointer]:
+                - img [ref=e312]
+                - generic [ref=e314]: Enable Speed Insights
+          - generic [ref=e315]:
+            - generic [ref=e316]:
+              - generic [ref=e317]:
+                - paragraph [ref=e318]:
+                  - strong [ref=e319]: Observability
+                - time [ref=e320]: 6h
+              - link "Go to page" [ref=e321] [cursor=pointer]:
+                - /url: /wr-dels-projects/word2article/observability?period=6h
+                - img [ref=e323]
+              - link [ref=e325] [cursor=pointer]:
+                - /url: /wr-dels-projects/word2article/observability?period=6h
+            - generic [ref=e327]:
+              - generic [ref=e328]:
+                - generic [ref=e329]: Edge Requests
+                - generic [ref=e330]: "0"
+              - img [ref=e335]
+              - generic [ref=e336]:
+                - generic [ref=e337]: Function Invocations
+                - generic [ref=e338]: "0"
+              - img [ref=e343]
+              - generic [ref=e344]:
+                - generic [ref=e345]: Error Rate
+                - generic [ref=e346]: 0%
+              - img [ref=e351]
+          - generic [ref=e352]:
+            - generic [ref=e353]:
+              - paragraph [ref=e355]:
+                - strong [ref=e356]: Analytics
+              - link "Go to page" [ref=e357] [cursor=pointer]:
+                - /url: /wr-dels-projects/word2article/analytics
+                - img [ref=e359]
+              - link [ref=e361] [cursor=pointer]:
+                - /url: /wr-dels-projects/word2article/analytics
+            - generic [ref=e363]:
+              - img [ref=e365]
+              - generic [ref=e367]:
+                - paragraph [ref=e368]: Track Visitors and Page Views
+                - paragraph [ref=e369]: See real-time traffic, top pages, and audience trends.
+              - link "Enable Analytics" [ref=e370] [cursor=pointer]:
+                - /url: /wr-dels-projects/word2article/analytics?enable=1&source=project-overview-analytics-card
+                - generic [ref=e371]: Enable Analytics
+        - generic [ref=e372]:
+          - paragraph [ref=e376]: Active Branches
+          - generic [ref=e380]:
+            - heading "No Active Branches" [level=3] [ref=e381]
+            - paragraph [ref=e383]: Commit using our Git connections.
+  - alert [ref=e385]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - img
