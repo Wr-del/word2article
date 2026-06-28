@@ -55,3 +55,6 @@ test-*.ts
 
 # mini program (separate project)
 word2article-taro/
+
+.vercel
+.env*

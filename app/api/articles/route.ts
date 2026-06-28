@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { getUserId } from '@/lib/auth-helpers'
 
 export async function GET() {
   try {
+    const userId = await getUserId()
+
     const articles = await prisma.article.findMany({
+      where: { userId: userId ?? null },
       orderBy: { createdAt: 'desc' },
       include: {
         _count: {

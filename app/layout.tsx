@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import Providers from '@/components/Providers'
 import BottomNav from '@/components/BottomNav'
+import UserNav from '@/components/UserNav'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -57,7 +58,7 @@ export default function RootLayout({
 
         {/* 顶部品牌栏 */}
         <header className="sticky top-0 z-40 backdrop-blur-xl" style={{ background: 'var(--header-bg)', borderBottom: '1px solid var(--border)' }}>
-          <div className="max-w-2xl mx-auto px-4 h-12 flex items-center">
+          <div className="max-w-2xl mx-auto px-4 h-12 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 cursor-pointer group">
               <div className="p-1 rounded-md" style={{ color: 'var(--brand-500)' }}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -68,6 +69,7 @@ export default function RootLayout({
                 Word2Article
               </span>
             </Link>
+            <UserNav />
           </div>
         </header>
 

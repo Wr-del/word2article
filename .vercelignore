@@ -1,0 +1,12 @@
+node_modules
+.next
+ecdict-sqlite
+word2article-taro
+screenshots
+.playwright-mcp
+scripts
+test-*.ts
+*.csv
+*.7z
+*.sqlite
+*.db

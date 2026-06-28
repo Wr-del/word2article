@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db'
 import { generateArticle, translateArticleToChinese, translateToChinese } from '@/lib/deepseek'
 import { lookupWord } from '@/lib/dictionary'
 import { STYLE_LABELS } from '@/lib/constants'
+import { getUserId } from '@/lib/auth-helpers'
 
 export async function POST(request: NextRequest) {
   try {
@@ -70,6 +71,7 @@ export async function POST(request: NextRequest) {
     )
 
     // 创建文章并关联单词
+    const userId = await getUserId()
     const article = await prisma.article.create({
       data: {
         title,
@@ -77,6 +79,7 @@ export async function POST(request: NextRequest) {
         translation,
         difficulty,
         style,
+        userId,
         words: {
           create: wordData,
         },
