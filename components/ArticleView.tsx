@@ -155,7 +155,7 @@ export default function ArticleView({ content, words, maskMode = false }: Articl
 
   return (
     <div className="relative">
-      <div className="text-slate-300 leading-relaxed font-serif text-[16.5px] md:text-[17.5px] tracking-wide space-y-4">
+      <div style={{ color: 'var(--fg-secondary)' }} className="leading-relaxed font-serif text-[16.5px] md:text-[17.5px] tracking-wide space-y-4">
         {renderContent()}
       </div>
 

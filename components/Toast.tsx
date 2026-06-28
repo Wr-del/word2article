@@ -33,7 +33,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div className={`px-4 py-2.5 rounded-xl text-xs font-semibold border shadow-lg backdrop-blur-xl ${
             toast.type === 'error'
               ? 'bg-rose-500/10 border-rose-500/30 text-rose-300'
-              : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+              : 'bg-purple-500/10 border-purple-500/30 text-purple-300'
           }`}>
             {toast.message}
           </div>

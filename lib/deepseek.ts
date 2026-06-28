@@ -72,9 +72,12 @@ const STYLE_PROMPTS: Record<string, string> = {
 }
 
 export async function generateArticle(words: string[], difficulty: string, style: string = 'story'): Promise<string> {
-  const difficultyPrompt = difficulty === 'cet6'
-    ? '文章难度级别：CET-6（大学英语六级）。可使用复合句和进阶词汇，整篇文章长度控制在 400-500 词。'
-    : '文章难度级别：CET-4（大学英语四级）。句式以简单句为主，用词易懂，整篇文章长度控制在 300-400 词。'
+  const difficultyPrompts: Record<string, string> = {
+    cet4: '文章难度级别：CET-4（大学英语四级）。句式以简单句为主，用词易懂，整篇文章长度控制在 300-400 词。',
+    cet6: '文章难度级别：CET-6（大学英语六级）。可使用复合句和进阶词汇，整篇文章长度控制在 400-500 词。',
+    ielts: '文章难度级别：IELTS（雅思）。使用学术性词汇和复杂句式，注重逻辑衔接和论证深度，整篇文章长度控制在 450-550 词。',
+  }
+  const difficultyPrompt = difficultyPrompts[difficulty] || difficultyPrompts.cet4
 
   const stylePrompt = STYLE_PROMPTS[style] || STYLE_PROMPTS.story
 

@@ -109,7 +109,7 @@ export default function ArticlePage() {
   if (loading) {
     return (
       <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 flex items-center justify-center">
-        <div className="text-slate-400 text-sm">加载中...</div>
+        <div style={{ color: 'var(--fg-muted)' }} className="text-sm">加载中...</div>
       </main>
     )
   }
@@ -117,7 +117,7 @@ export default function ArticlePage() {
   if (!article) {
     return (
       <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 flex items-center justify-center">
-        <div className="text-rose-400 text-sm">文章未找到</div>
+        <div style={{ color: '#ef4444' }} className="text-sm">文章未找到</div>
       </main>
     )
   }
@@ -125,16 +125,7 @@ export default function ArticlePage() {
   const wordList = article.words.map(w => w.word)
 
   return (
-    <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
-      <div className="mb-6">
-        <Link href="/" className="text-xs transition-colors flex items-center gap-1" style={{ color: 'var(--fg-muted)' }}>
-          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          返回首页
-        </Link>
-      </div>
-
+    <main className="max-w-2xl w-full mx-auto p-4 space-y-4 relative z-10">
       {/* 沉浸式文章阅读面板 */}
       <div className="glass-card rounded-2xl custom-shadow overflow-hidden flex flex-col">
 
@@ -172,10 +163,10 @@ export default function ArticlePage() {
             >
               {copied ? (
                 <>
-                  <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <svg className="w-3 h-3 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-emerald-400">已复制</span>
+                  <span className="text-purple-400">已复制</span>
                 </>
               ) : (
                 <>
@@ -245,15 +236,25 @@ export default function ArticlePage() {
         </div>
       </div>
 
-      <div className="mt-6 text-center space-x-4">
-        <Link href={`/quiz/${params.id}`} className="text-[10px] font-bold transition-colors" style={{ color: 'var(--brand-500)' }}>
-          开始测试
+      {/* 底部操作 */}
+      <div className="flex gap-3">
+        <Link
+          href={`/quiz/${params.id}`}
+          className="flex-1 py-3 text-center text-sm font-bold rounded-2xl transition-all"
+          style={{
+            background: 'linear-gradient(135deg, var(--brand-500), var(--brand-600))',
+            color: '#ffffff',
+            boxShadow: '0 4px 15px rgba(168, 85, 247, 0.3)',
+          }}
+        >
+          开始测验 →
         </Link>
-        <Link href="/" className="text-[10px] font-bold transition-colors" style={{ color: 'var(--brand-500)' }}>
-          生成新文章
-        </Link>
-        <Link href="/history" className="text-[10px] font-medium transition-colors" style={{ color: 'var(--fg-muted)' }}>
-          历史记录
+        <Link
+          href="/"
+          className="px-5 py-3 text-sm font-semibold rounded-2xl transition-all"
+          style={{ background: 'var(--input-bg)', color: 'var(--fg-secondary)', border: '1px solid var(--border)' }}
+        >
+          新文章
         </Link>
       </div>
     </main>

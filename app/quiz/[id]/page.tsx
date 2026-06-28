@@ -46,10 +46,10 @@ export default function QuizPage() {
     if (showResult) return
     setSelectedAnswer(chinese)
     setShowResult(true)
-    
+
     const currentQuestion = questions[currentIndex]
     const isCorrect = currentQuestion.options.find(o => o.isCorrect)?.chinese === chinese
-    
+
     if (isCorrect) {
       setScore(score + 1)
     }
@@ -75,18 +75,18 @@ export default function QuizPage() {
 
   if (loading) {
     return (
-      <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 flex items-center justify-center">
-        <div className="text-slate-400 text-sm">加载中...</div>
+      <main className="max-w-2xl w-full mx-auto p-4 flex items-center justify-center">
+        <div style={{ color: 'var(--fg-muted)' }} className="text-sm">加载中...</div>
       </main>
     )
   }
 
   if (questions.length === 0) {
     return (
-      <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 flex items-center justify-center">
+      <main className="max-w-2xl w-full mx-auto p-4 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="text-slate-400">暂无测试题目</div>
-           <Link href="/" className="text-xs text-brand-500 hover:text-brand-600">返回首页</Link>
+          <div style={{ color: 'var(--fg-muted)' }}>暂无测试题目</div>
+          <Link href="/" className="text-xs font-semibold" style={{ color: 'var(--brand-500)' }}>返回首页</Link>
         </div>
       </main>
     )
@@ -95,25 +95,27 @@ export default function QuizPage() {
   if (finished) {
     const percentage = Math.round((score / questions.length) * 100)
     return (
-      <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
+      <main className="max-w-2xl w-full mx-auto p-4 space-y-4 relative z-10">
         <div className="glass-card rounded-2xl custom-shadow p-8 text-center space-y-6">
-          <div className="text-6xl font-bold text-brand-500">{percentage}%</div>
+          <div className="text-6xl font-bold" style={{ color: 'var(--brand-500)' }}>{percentage}%</div>
           <div className="space-y-2">
-            <div className="text-slate-200 text-lg font-semibold">测试完成！</div>
-            <div className="text-slate-400 text-sm">
+            <div className="text-lg font-semibold" style={{ color: 'var(--fg)' }}>测试完成！</div>
+            <div className="text-sm" style={{ color: 'var(--fg-muted)' }}>
               共 {questions.length} 题，答对 {score} 题
             </div>
           </div>
-          <div className="flex gap-4 justify-center">
+          <div className="flex gap-3 justify-center">
             <button
               onClick={handleRestart}
-              className="px-6 py-2.5 bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold text-xs rounded-xl transition-all"
+              className="px-6 py-2.5 font-bold text-xs rounded-xl transition-all"
+              style={{ background: 'var(--brand-500)', color: '#ffffff' }}
             >
               再测一次
             </button>
             <Link
               href={`/article/${params.id}`}
-              className="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition-all"
+              className="px-6 py-2.5 font-bold text-xs rounded-xl transition-all"
+              style={{ background: 'var(--input-bg)', color: 'var(--fg-secondary)' }}
             >
               返回文章
             </Link>
@@ -128,48 +130,68 @@ export default function QuizPage() {
     ? currentQuestion.options.find(o => o.chinese === selectedAnswer)?.isCorrect
     : null
 
+  const progress = ((currentIndex + 1) / questions.length) * 100
+
   return (
-    <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
+    <main className="max-w-2xl w-full mx-auto p-4 space-y-4 relative z-10">
+      {/* 进度栏 */}
       <div className="flex items-center justify-between">
-        <Link href={`/article/${params.id}`} className="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1">
-          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          返回文章
+        <Link href={`/article/${params.id}`} className="text-xs font-medium transition-colors" style={{ color: 'var(--fg-muted)' }}>
+          退出
         </Link>
-        <div className="text-xs text-slate-500">
+        <div className="text-xs font-semibold" style={{ color: 'var(--fg-muted)' }}>
           {currentIndex + 1} / {questions.length}
         </div>
       </div>
 
-      <div className="glass-card rounded-2xl custom-shadow p-6 md:p-8 space-y-6">
-        <div className="text-center space-y-4">
-          <div className="text-3xl font-bold text-brand-500">{currentQuestion.word}</div>
+      {/* 进度条 */}
+      <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: 'var(--input-bg)' }}>
+        <div className="h-full rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: 'var(--brand-500)' }}></div>
+      </div>
+
+      {/* 单词卡片 */}
+      <div className="glass-card rounded-2xl custom-shadow p-6 space-y-6">
+        <div className="text-center space-y-2">
+          <div className="text-3xl font-bold" style={{ color: 'var(--brand-500)' }}>{currentQuestion.word}</div>
           {currentQuestion.phonetic && (
-            <div className="text-slate-500 text-sm">{currentQuestion.phonetic}</div>
+            <div className="text-sm" style={{ color: 'var(--fg-muted)' }}>{currentQuestion.phonetic}</div>
           )}
-          <div className="text-slate-400 text-sm">选择正确的中文释义</div>
+          <div className="text-xs" style={{ color: 'var(--fg-muted)' }}>选择正确的中文释义</div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedAnswer === option.chinese
             const isCorrectOption = option.isCorrect
-            
-            let buttonClass = 'w-full p-4 rounded-xl border text-left transition-all text-sm '
-            
+
+            let bgColor = 'var(--input-bg)'
+            let borderColor = 'var(--input-border)'
+            let textColor = 'var(--fg-secondary)'
+            let letterBg = 'var(--input-bg)'
+            let letterColor = 'var(--fg-muted)'
+
             if (showResult) {
               if (isCorrectOption) {
-                buttonClass += 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
+                bgColor = 'var(--highlight-bg)'
+                borderColor = 'var(--brand-500)'
+                textColor = 'var(--brand-500)'
+                letterBg = 'var(--brand-500)'
+                letterColor = '#ffffff'
               } else if (isSelected && !isCorrectOption) {
-                buttonClass += 'border-rose-500 bg-rose-500/10 text-rose-400'
+                bgColor = 'rgba(239, 68, 68, 0.1)'
+                borderColor = '#ef4444'
+                textColor = '#ef4444'
+                letterBg = '#ef4444'
+                letterColor = '#ffffff'
               } else {
-                buttonClass += 'border-slate-800 text-slate-500'
+                textColor = 'var(--fg-muted)'
               }
-            } else {
-              buttonClass += isSelected
-                ? 'border-brand-500 bg-brand-500/10 text-brand-400'
-                : 'border-slate-800 hover:border-slate-700 text-slate-300 hover:text-slate-200'
+            } else if (isSelected) {
+              bgColor = 'var(--highlight-bg)'
+              borderColor = 'var(--brand-500)'
+              textColor = 'var(--brand-500)'
+              letterBg = 'var(--brand-500)'
+              letterColor = '#ffffff'
             }
 
             return (
@@ -177,9 +199,12 @@ export default function QuizPage() {
                 key={index}
                 onClick={() => handleAnswer(option.chinese || '')}
                 disabled={showResult}
-                className={buttonClass}
+                className="w-full p-3.5 rounded-xl border text-left transition-all text-sm flex items-center gap-3"
+                style={{ background: bgColor, borderColor, color: textColor }}
               >
-                <span className="font-mono text-slate-600 mr-3">{String.fromCharCode(65 + index)}.</span>
+                <span className="w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-bold flex-shrink-0" style={{ background: letterBg, color: letterColor }}>
+                  {String.fromCharCode(65 + index)}
+                </span>
                 {option.chinese}
               </button>
             )
@@ -187,13 +212,18 @@ export default function QuizPage() {
         </div>
 
         {showResult && (
-          <div className="text-center space-y-4">
-            <div className={`text-sm font-semibold ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}`}>
+          <div className="text-center space-y-3 pt-2">
+            <div className="text-sm font-semibold" style={{ color: isCorrect ? 'var(--brand-500)' : '#ef4444' }}>
               {isCorrect ? '回答正确！' : '回答错误'}
             </div>
             <button
               onClick={handleNext}
-              className="px-8 py-3 bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold text-xs rounded-xl transition-all"
+              className="w-full py-3 font-bold text-sm rounded-2xl transition-all"
+              style={{
+                background: 'linear-gradient(135deg, var(--brand-500), var(--brand-600))',
+                color: '#ffffff',
+                boxShadow: '0 4px 15px rgba(168, 85, 247, 0.3)',
+              }}
             >
               {currentIndex < questions.length - 1 ? '下一题' : '查看成绩'}
             </button>

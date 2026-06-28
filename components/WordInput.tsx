@@ -67,7 +67,7 @@ export default function WordInput({ onSubmit, loading, initialText = '' }: WordI
             color: 'var(--fg)',
             border: '1px solid var(--input-border)',
           }}
-          onFocus={e => { e.currentTarget.style.background = 'var(--input-focus-bg)'; e.currentTarget.style.borderColor = 'var(--brand-500)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.1)'; }}
+          onFocus={e => { e.currentTarget.style.background = 'var(--input-focus-bg)'; e.currentTarget.style.borderColor = 'var(--brand-500)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.1)'; }}
           onBlur={e => { e.currentTarget.style.background = 'var(--input-bg)'; e.currentTarget.style.borderColor = 'var(--input-border)'; e.currentTarget.style.boxShadow = 'none'; }}
           disabled={loading}
         />
@@ -125,14 +125,14 @@ export default function WordInput({ onSubmit, loading, initialText = '' }: WordI
         <button
           onClick={handleSubmit}
           disabled={!text.trim() || loading}
-          className="text-slate-950 font-bold text-xs px-5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-          style={{ background: 'var(--brand-500)' }}
+          className="font-bold text-xs px-5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+          style={{ background: 'var(--brand-500)', color: '#ffffff' }}
           onMouseEnter={e => { if (!e.currentTarget.disabled) e.currentTarget.style.background = 'var(--brand-600)'; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'var(--brand-500)'; }}
         >
           {loading ? (
             <>
-              <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-950 border-t-transparent animate-spin"></div>
+              <div className="w-3.5 h-3.5 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'rgba(255,255,255,0.3)', borderTopColor: '#ffffff' }}></div>
               生成中...
             </>
           ) : (

@@ -105,30 +105,31 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-md">
-      <div className="bg-[#080d19]/95 rounded-t-2xl sm:rounded-2xl border-t sm:border border-slate-800/60 max-w-md w-full overflow-hidden flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.6)' }}>
+      <div className="rounded-t-2xl sm:rounded-2xl border-t sm:border max-w-md w-full overflow-hidden flex flex-col max-h-[85vh]" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
 
         {/* 弹窗顶栏 */}
-        <div className="px-5 py-4 border-b border-slate-900/80 flex items-center justify-between bg-slate-950/40">
-          <h3 className="font-bold text-slate-200 text-xs flex items-center gap-2">
-            <svg className="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <div className="px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)', background: 'var(--input-bg)' }}>
+          <h3 className="font-bold text-xs flex items-center gap-2" style={{ color: 'var(--fg)' }}>
+            <svg className="w-4 h-4" style={{ color: 'var(--brand-500)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
             </svg>
             从 PDF 智能识别单词
           </h3>
           <button
             onClick={onClose}
-            className="text-slate-500 hover:text-slate-300 p-1.5 rounded-xl hover:bg-slate-900 transition-colors"
+            className="p-1.5 rounded-xl transition-colors"
+            style={{ color: 'var(--fg-muted)' }}
             aria-label="关闭"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* 弹窗主体 */}
-        <div className="p-5 overflow-y-auto space-y-4 flex-1 bg-slate-950/10">
+        <div className="p-5 overflow-y-auto space-y-4 flex-1">
 
           {/* 拖放上传区 */}
           <div
@@ -136,11 +137,11 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`border border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-150 bg-slate-950/30 ${
-              isDragOver
-                ? 'border-brand-500/50 bg-brand-500/5'
-                : 'border-slate-800 hover:border-brand-500/40'
-            } group`}
+            className="border border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-150"
+            style={{
+              borderColor: isDragOver ? 'var(--brand-500)' : 'var(--border)',
+              background: isDragOver ? 'var(--highlight-bg)' : 'var(--input-bg)',
+            }}
           >
             <input
               ref={fileInputRef}
@@ -150,57 +151,58 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
               className="hidden"
               aria-label="选择PDF文件"
             />
-            <div className="flex flex-col items-center gap-2.5 text-slate-500">
-              <div className={`p-2.5 bg-slate-900 text-slate-400 border border-slate-800 rounded-xl transition-transform duration-300 group-hover:scale-105 ${isDragOver ? 'scale-110 border-brand-500/50' : ''}`}>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            <div className="flex flex-col items-center gap-2.5">
+              <div className="p-2.5 rounded-xl transition-transform duration-300" style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', color: 'var(--fg-muted)' }}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-300">
+                <p className="text-xs font-semibold" style={{ color: 'var(--fg)' }}>
                   {file ? file.name : '将不背单词 PDF 拖到此处，或点击上传'}
                 </p>
-                <p className="text-[10px] text-slate-600 mt-1">支持物理坐标自动黏合与清洗</p>
+                <p className="text-[10px] mt-1" style={{ color: 'var(--fg-muted)' }}>支持物理坐标自动黏合与清洗</p>
               </div>
             </div>
           </div>
 
           {error && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl">
-              <p className="text-rose-400 text-xs">{error}</p>
+            <div className="p-3 rounded-xl" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+              <p className="text-xs" style={{ color: '#ef4444' }}>{error}</p>
             </div>
           )}
 
           {/* 正在解析中 */}
           {loading && (
-            <div className="py-8 text-center text-xs text-slate-500 flex flex-col items-center gap-2.5">
-              <div className="w-5 h-5 rounded-full border border-slate-800 border-t-brand-500 animate-spin"></div>
-              <p className="animate-pulse text-slate-400">正在深度拼合文本碎片并清洗词单...</p>
+            <div className="py-8 text-center text-xs flex flex-col items-center gap-2.5" style={{ color: 'var(--fg-muted)' }}>
+              <div className="w-5 h-5 rounded-full border-2 animate-spin" style={{ borderColor: 'var(--border)', borderTopColor: 'var(--brand-500)' }}></div>
+              <p className="animate-pulse">正在深度拼合文本碎片并清洗词单...</p>
             </div>
           )}
 
           {/* 解析结果预览 */}
           {extractedWords.length > 0 && !loading && (
             <div className="space-y-2">
-              <div className="text-[10px] font-bold text-slate-500 flex items-center justify-between">
+              <div className="text-[10px] font-bold flex items-center justify-between" style={{ color: 'var(--fg-muted)' }}>
                 <span>识别到 {extractedWords.length} 个单词</span>
-                <span className="text-brand-500 flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <span className="flex items-center gap-1" style={{ color: 'var(--brand-500)' }}>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   已去重清洗
                 </span>
               </div>
-              <div className="flex flex-wrap gap-1 p-2.5 bg-slate-950/50 rounded-xl border border-slate-900 max-h-36 overflow-y-auto">
+              <div className="flex flex-wrap gap-1 p-2.5 rounded-xl max-h-36 overflow-y-auto" style={{ background: 'var(--input-bg)', border: '1px solid var(--border)' }}>
                 {extractedWords.map(word => (
                   <button
                     key={word}
                     onClick={() => toggleWord(word)}
-                    className={`word-badge text-[11px] font-semibold px-2.5 py-1 rounded-md border shadow-sm transition-all duration-300 hover:-translate-y-0.5 active:scale-95 ${
-                      selectedWords.has(word)
-                        ? 'bg-brand-500/20 text-brand-400 border-brand-500/30'
-                        : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-brand-500/30 hover:text-brand-400'
-                    }`}
+                    className="word-badge text-[11px] font-semibold px-2.5 py-1 rounded-md border transition-all duration-200"
+                    style={{
+                      background: selectedWords.has(word) ? 'var(--highlight-bg)' : 'var(--bg-secondary)',
+                      borderColor: selectedWords.has(word) ? 'var(--brand-500)' : 'var(--border)',
+                      color: selectedWords.has(word) ? 'var(--brand-500)' : 'var(--fg-secondary)',
+                    }}
                   >
                     {word}
                   </button>
@@ -211,17 +213,19 @@ export default function PdfImport({ onImport, onClose }: PdfImportProps) {
         </div>
 
         {/* 弹窗底栏 */}
-        <div className="px-5 py-3.5 border-t border-slate-900/80 bg-slate-950/40 flex justify-end gap-2">
+        <div className="px-5 py-3.5 border-t flex justify-end gap-2" style={{ borderColor: 'var(--border)', background: 'var(--input-bg)' }}>
           <button
             onClick={onClose}
-            className="flex-1 sm:flex-none px-4 py-2.5 text-xs font-semibold text-slate-400 hover:text-slate-200 rounded-xl transition-colors"
+            className="flex-1 sm:flex-none px-4 py-2.5 text-xs font-semibold rounded-xl transition-colors"
+            style={{ color: 'var(--fg-muted)' }}
           >
             取消
           </button>
           <button
             onClick={handleImport}
             disabled={selectedWords.size === 0}
-            className="flex-1 sm:flex-none px-5 py-2.5 text-xs font-bold bg-brand-500 hover:bg-brand-600 disabled:bg-slate-800 text-slate-950 disabled:text-slate-500 rounded-xl transition-all"
+            className="flex-1 sm:flex-none px-5 py-2.5 text-xs font-bold rounded-xl transition-all disabled:opacity-40"
+            style={{ background: 'var(--brand-500)', color: '#ffffff' }}
           >
             确认导入
           </button>

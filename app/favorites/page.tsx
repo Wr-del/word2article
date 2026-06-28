@@ -49,19 +49,17 @@ export default function FavoritesPage() {
 
   if (loading) {
     return (
-      <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 flex items-center justify-center">
-        <div className="text-slate-400 text-sm">加载中...</div>
+      <main className="max-w-2xl w-full mx-auto p-4 flex items-center justify-center">
+        <div style={{ color: 'var(--fg-muted)' }} className="text-sm">加载中...</div>
       </main>
     )
   }
 
   return (
-    <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:py-8 space-y-6 relative z-10">
-      <div className="flex items-center justify-between pb-4" style={{ borderBottom: '1px solid var(--border)' }}>
-        <div>
-          <h2 className="text-base font-bold" style={{ color: 'var(--fg)' }}>生词本</h2>
-          <p className="text-[10px] mt-0.5" style={{ color: 'var(--fg-muted)' }}>收藏的单词共 {favorites.length} 个</p>
-        </div>
+    <main className="max-w-2xl w-full mx-auto p-4 space-y-4 relative z-10">
+      <div className="space-y-1 pt-2 pb-1">
+        <h1 className="text-xl font-bold tracking-tight" style={{ color: 'var(--fg)' }}>生词本</h1>
+        <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>收藏的单词共 {favorites.length} 个</p>
       </div>
 
       {favorites.length === 0 ? (
